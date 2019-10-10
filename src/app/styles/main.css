@@ -3,11 +3,15 @@ body {
 }
 
 #app {
-  width: calc(100% - 50px - 25%) !important;
-  height: calc(100% - 100px) !important;
+  width: calc(100vw - 50px - 350px) !important;
+  height: calc(100vh - 100px) !important;
   position: absolute !important;
   top: 50px!important;
   left: 50px!important;
+}
+
+.app {
+  width: 100%!important;
 }
 
 .sideBar {
@@ -17,28 +21,50 @@ body {
   top: 0;
   border: 1px solid grey;
   left: 0;
-  background: #fff;
-  padding: 10px;
+  background: #014489;
+  padding: 20px 0;
 }
 
 .quick-replies {
   height: 50px;
   bottom: 0;
-  left: 0;
-  width: 100vw;
+  left: 50px;
+  width: calc(100vw - 50px - 350px);
   position: absolute;
-  border: 1px solid grey;
+  border-top: 1px solid grey;
   background: #fff;
   padding: 10px;    
 }
 
 .mainMenu {
-  width: 25%;
-  top: 0;
+  width: 350px;
+  bottom: 0;
   right: 0;
-  height: 100vw;
+  height: calc(100vh - 50px);
   position: absolute;
-  border: 1px solid grey;
+  border-left: 1px solid grey;
   background: #fff;
   padding: 10px;
+}
+
+.topLogo {
+  height: 50px;
+  top: 0;
+  left: 50px;
+  width: calc(100vw - 50px);
+  position: absolute;
+  border-bottom: 1px solid grey;
+  background: #fff;
+  padding: 10px; 
+}
+
+@media screen and (min-width: 1441px) {
+  ._1FPJ-:after {
+    width: 0!important;
+  }
+
+  .app-wrapper-web ._3fUe9 {
+    height: 100%!important;
+    top: 0!important;
+  }
 }
