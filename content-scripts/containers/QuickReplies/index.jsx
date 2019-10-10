@@ -12,7 +12,7 @@ class QuickReplies extends React.Component {
 
 
   handleAddCount = () => {
-    this.props.addCount();
+    // this.props.addCount();
   }
 
   render() {
