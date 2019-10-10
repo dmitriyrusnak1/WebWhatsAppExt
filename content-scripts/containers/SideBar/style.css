@@ -23,3 +23,9 @@
     background: green;
 }
 
+.iconWrapper>img {
+    width: 100%;
+    height: 35px;
+    padding-top: 10px;
+}
+
