@@ -1,7 +1,16 @@
 import React from 'react';
+import { string, func } from 'prop-types';
 import Input from 'antd/es/input';
 import * as css from './style.css';
 
+
+const propTypes = {
+    handleChangePhone: func,
+    handleChangeMessage: func,
+    handleSendMessage: func,
+    phoneNumber: string,
+    message: string
+};
 
 function NewMessage({
     handleChangePhone,
@@ -40,5 +49,7 @@ function NewMessage({
         </form>
     );
 }
+
+NewMessage.propTypes = propTypes;
 
 export default NewMessage;
