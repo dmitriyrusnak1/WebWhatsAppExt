@@ -34,7 +34,6 @@ function NewMessage({
                     <img
                         src={sendIcon}
                         alt="sendIcon"
-                        // onClick={handleSendMessage}
                     />
                 </button>
             </div>
