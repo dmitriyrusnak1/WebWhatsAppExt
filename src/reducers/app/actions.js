@@ -1,5 +1,18 @@
 import * as c from './constants';
 
-export const addCount = () => ({
-    type: c.ADD_COUNT
+
+export const deleteReply = (id) => ({
+    type: c.DELETE_REPLY,
+    id
 });
+
+export const changeReply = (id, text) => ({
+    type: c.CHANGE_REPLY,
+    id,
+    text
+});
+
+export const addNewReply = (text) => ({
+    type: c.ADD_NEW_REPLY,
+    text
+})

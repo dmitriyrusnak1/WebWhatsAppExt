@@ -6,7 +6,6 @@
 }
 
 .mainBottomAreaWrapper>div {
-    padding: 0 10px;
     height: 100%;
     display: flex;
     justify-content: space-between;
@@ -20,7 +19,6 @@
 
 .mainBottomAreaWrapper>div:nth-child(2){
     width: 70%;
-    position: relative;
 }
 
 p {
@@ -28,7 +26,13 @@ p {
     padding: 10px 0 0 10px!important;
 }
 
-.quickReplies {
+.filtersField {
+    position: relative;
+    padding: 0 10px;
+}
+
+.quickReplies,
+.filters {
     border: 1px solid #ddd;
     width: 100%;
     position: absolute;
@@ -40,15 +44,26 @@ p {
     padding-bottom: 20px;
 }
 
-.quickReplies>div {
+.quickReplies>div,
+.filters>div {
     text-align: left;
+}
+
+.filters p,
+.colorField {
+    padding-left: 10px;
+}
+
+.filters>div>p {
+    font-weight: 700;
 }
 
 .quickReplies>button {
     margin-top: 30px;
 }
 
-.disableQuickReplies {
+.disableQuickReplies,
+.disableFilters {
     display: none;
 }
 
@@ -57,4 +72,48 @@ p {
     height: 1px;
     background: #ddd;
     margin-top: 10px;
+}
+
+.quickRepliesField {
+    display: flex;
+}
+
+.quickRepliesField>div:first-child {
+    width: calc(100% - 60px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    padding: 0 10px;
+}
+
+.quickRepliesField>div:nth-child(2) {
+    width: 60px;
+}
+
+.emailButton {
+    height: 100%;
+    text-align: center;
+    border-left: 1px solid #ddd;
+}
+
+.emailButton>i {
+    font-size: 22px;
+    margin-top: 15px;
+}
+
+.colorField {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.colorField>p {
+    padding: 0 0 0 10px!important;
+}
+
+.colorCircle {
+    border-radius: 3px;
+    width: 10px;
+    height:10px;
 }
