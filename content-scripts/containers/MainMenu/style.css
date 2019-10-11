@@ -1,0 +1,7 @@
+@value colors: "../../global-style/colors.css";
+@value (mainBlueColor) from colors;
+
+.mainMenuHeader {
+    height: 50px;
+    background: mainBlueColor;
+}
