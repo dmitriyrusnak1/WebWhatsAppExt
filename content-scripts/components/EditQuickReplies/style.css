@@ -1,0 +1,46 @@
+.editQuickRepliesWrapper h1 {
+    text-transform: capitalize;
+    text-align: center;
+    font-weight: 800;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background: #ddd;
+    margin-top: 10px;
+}
+
+.quickRepliesField,
+.addNewRepliesField {
+    display: flex;
+    justify-content: space-between;
+}
+
+.quickRepliesField>:nth-child(2)>i {
+    margin: 12px 4px 0 4px;
+}
+
+.addNewRepliesField {
+    margin-top: 40px;
+}
+
+.addNewRepliesField>div:first-child {
+    width: 75%;
+    align-self: flex-end;
+}
+
+.addNewRepliesField>div:first-child input {
+    width: 100%;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid #d3d3d3; 
+}
+
+.mediaQueryField {
+    margin-top: 70px;
+}
+
+.uploaderFormWrapper {
+    text-align: center;
+}

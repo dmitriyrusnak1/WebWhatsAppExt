@@ -1,35 +1,193 @@
 import React from "react";
-import {Button} from 'antd';
+import { array } from 'prop-types';
+import Icon from 'antd/es/icon';
+import Modal from 'antd/es/modal';
+import Button from 'antd/es/button';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { addCount } from '../../../src/reducers/app/actions';
+import classNames from 'classnames';
+import isEmpty from 'lodash/isEmpty';
+import { SendEmailWindow, EditQuickReplies } from '../../components';
+import * as css from './style.css';
 
+
+
+const propTypes = {
+  quickReplies: array,
+  colorFilters: array,
+};
 
 class QuickReplies extends React.Component {
   constructor(props) {
     super(props);
   }
 
-
-  handleAddCount = () => {
-    // this.props.addCount();
+  state = {
+    isQuickRepliesVisible: false,
+    isModalMoreVisible: false,
+    isModalEmailVisible: false,
+    email: '',
+    choosenReplies: '',
+    choosenFilter: {},
+    isFiltersVisible: false
   }
 
+  handleOpenQuickReplies = () => {
+    this.setState({isQuickRepliesVisible: !this.state.isQuickRepliesVisible});
+  }
+
+  handleCancelModalMore = () => {
+    this.setState({isModalMoreVisible: !this.state.isModalMoreVisible});
+  }
+
+  handleOpenModalMore = () => {
+    this.setState({isModalMoreVisible: !this.state.isModalMoreVisible});
+    this.setState({isQuickRepliesVisible: false});
+  }
+
+  handleOpenModalEmail = () => {
+    this.setState({isModalEmailVisible: !this.state.isModalEmailVisible});
+  }
+
+  handleCloseModalEmail = () => {
+    this.setState({isModalEmailVisible: !this.state.isModalEmailVisible});
+    this.setState({email: ''});
+  }
+
+  handleChangeEmail = (e) => {
+    const value = e.target.value;
+    this.setState({email: value});
+  }
+
+  handleSendEmail = (e) => {
+    e.preventDefault();
+    this.setState({isModalEmailVisible: !this.state.isModalEmailVisible});
+  }
+
+  handleChooseReplies = (id) => () => {
+    this.setState({
+      choosenReplies: id,
+      isQuickRepliesVisible: false
+    });
+  }
+
+  handleOpenFilters = () => {
+    this.setState({isFiltersVisible: !this.state.isFiltersVisible});
+  }
+
+  handleChooseFilters = (item) => () => {
+    this.setState({
+      choosenFilter: {...item},
+      isFiltersVisible: false
+    });
+  }
+
+
   render() {
+    const {
+      isQuickRepliesVisible,
+      isModalMoreVisible,
+      isModalEmailVisible,
+      email,
+      choosenReplies,
+      isFiltersVisible,
+      choosenFilter
+    } = this.state;
+
+    const { quickReplies, colorFilters } = this.props;
+
     return <div className='quick-replies'>
-      <Button type="primary" onClick={this.handleAddCount}>Click me</Button>
+      <div className={css.mainBottomAreaWrapper}>
+          <div className={css.filtersField}>
+              {
+                  isEmpty(choosenFilter) ?
+                  <p>Filter</p> :
+                  <div>
+                      {colorFilters.map(item => 
+                          item.id === choosenFilter.id ?
+                          <div key={item.id} className={css.colorField}>
+                              <div className={css.colorCircle} style={{background: `${item.color}`}} />
+                              <p>{item.label}</p>
+                          </div> : null
+                      )}
+                  </div>
+              }
+              <p><Icon onClick={this.handleOpenFilters} type="down" /></p>
+              <div
+                  className={classNames({
+                      [css.filters]: true,
+                      [css.disableFilters]: !isFiltersVisible,
+                  })}
+              >
+                  <div>
+                      <p>Filter by:</p>
+                      {colorFilters.map((item) =>
+                          <div onClick={this.handleChooseFilters(item)} key={item.id}>
+                              <div className={css.colorField}>
+                                  <div className={css.colorCircle} style={{background: `${item.color}`}} />
+                                  <p>{item.label}</p>
+                              </div>
+                              <div className={css.divider} />
+                          </div>)}
+                  </div>
+              </div>
+          </div>
+          <div className={css.quickRepliesField}>
+              <div>
+                  <p>{!choosenReplies ? 'Quick Replies' : quickReplies.filter(item => item.id === choosenReplies)[0].text}</p>
+                  <p>
+                      <Icon onClick={this.handleOpenQuickReplies} type="down" />
+                  </p>
+                  <div
+                      className={classNames({
+                          [css.quickReplies]: true,
+                          [css.disableQuickReplies]: !isQuickRepliesVisible,
+                      })}
+                  >
+                      <div>
+                          {quickReplies.map((item) =>
+                              <React.Fragment key={item.id}>
+                                  <p onClick={this.handleChooseReplies(item.id)}>{item.text}</p>
+                                  <div className={css.divider} />
+                              </React.Fragment>)}
+                      </div>
+                      <Button onClick={this.handleOpenModalMore}>More<Icon type="double-right" /></Button>
+                  </div>
+              </div>
+              <div className={css.emailButton}>
+                  <Icon type="mail" onClick={this.handleOpenModalEmail} />
+              </div>
+          </div>
+      </div>
+      <Modal
+          visible={isModalMoreVisible}
+          footer={null}
+          onCancel={this.handleCancelModalMore}
+          width={900}
+      >
+          <EditQuickReplies />
+      </Modal>
+      <Modal
+          visible={isModalEmailVisible}
+          footer={null}
+          onCancel={this.handleCloseModalEmail}
+      >
+          <SendEmailWindow
+              handleChangeEmail={this.handleChangeEmail}
+              handleSendEmail={this.handleSendEmail}
+              email={email}
+          />
+      </Modal>
     </div>;
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-  addCount: bindActionCreators(addCount, dispatch)
-});
 
 
 const mapStateToProps = (state) =>({
-  count: state.app,
-  state: state
+  quickReplies: state.app.quickReplies,
+  colorFilters: state.app.colorFilters
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(QuickReplies);
+QuickReplies.propTypes = propTypes;
+
+export default connect(mapStateToProps)(QuickReplies);
