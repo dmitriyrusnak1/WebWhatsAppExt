@@ -1,0 +1,31 @@
+.labelsFieldWrapper {
+    padding: 0 10px 10px 10px;
+}
+
+.labelHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.labelHeader>h1 {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.colorField {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.colorField>p {
+    padding: 0 0 0 10px!important;
+}
+
+.colorCircle {
+    border-radius: 3px;
+    width: 10px;
+    height:10px;
+}

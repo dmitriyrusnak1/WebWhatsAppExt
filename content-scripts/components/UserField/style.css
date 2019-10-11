@@ -1,0 +1,21 @@
+.userFieldWrapper {
+    padding: 10px 10px 0 10px;
+}
+
+.userFieldWrapper>h1 {
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.userFieldWrapper>div {
+    display: flex;
+    align-items: center;
+}
+
+.userFieldWrapper p {
+    padding: 0!important;
+}
+
+.userFieldWrapper span {
+    margin-right: 20px;
+}

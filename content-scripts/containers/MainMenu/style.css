@@ -2,6 +2,15 @@
 @value (mainBlueColor) from colors;
 
 .mainMenuHeader {
-    height: 50px;
+    height: 60px;
     background: mainBlueColor;
+    display: flex;
+}
+
+.mainMenuHeader>h1 {
+    margin: 0 0 0 10px;
+    align-self: center;
+    color: #fff;
+    font-size: 26px;
+    font-weight: 700;
 }
