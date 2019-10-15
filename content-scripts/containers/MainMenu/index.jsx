@@ -1,11 +1,18 @@
 import React from 'react';
+import { UserField, LabelsField, NoteField } from '../../components';
+import * as css from './style.css';
 
 
 function MainMenu() {
 
     return (
         <div className='mainMenu'>
-            MainMenu
+            <div className={css.mainMenuHeader}>
+                <h1>WhatsHack</h1>
+            </div>
+            <UserField />
+            <LabelsField />
+            <NoteField />
         </div>
     );
 }

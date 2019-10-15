@@ -33,7 +33,23 @@ const quickReplies = (state = initialState.quickReplies, action) => {
 
 const colorFilters = (state = initialState.colorFilters, action) => {
     switch (action.type) {
-
+        case c.DELETE_LABEL:
+            const newColorFilters = state.filter(item => item.id !== action.id);
+            return [...newColorFilters];
+        case c.CHANGE_LABEL:
+            const newLabels = state.map(
+                item =>
+                    item.id === action.id ?
+                    {...item, label: action.text}: item
+            )
+            return [...newLabels];
+        case c.ADD_NEW_LABEL:
+            const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+            const newItem = {};
+            newItem.id = newId;
+            newItem.color = action.color;
+            newItem.label = action.label;
+            return [...state, newItem];
         default:
             return state;
     }
