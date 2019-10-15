@@ -32,10 +32,19 @@
 }
 
 .labelsSettingsWrapper {
-    height: 700px;
+    height: 750px;
+}
+
+.labelsSettingsWrapper button {
+    min-width: 150px;
 }
 
 .labelsSettingsWrapper h1 {
+    font-size: 20px;
+}
+
+.labelsSettingsWrapper h1,
+.labelsSettingsWrapper h3 {
     text-transform: capitalize;
     text-align: center;
     font-weight: 800;
@@ -55,4 +64,38 @@
 .newLabelButton {
     margin: 20px 0;
     text-align: center;
+}
+
+.colorPickerWrapper {
+    text-align: center;
+}
+
+.colorPickerWrapper>div {
+    margin-bottom: 30px;
+}
+
+.saturationField {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    margin: 0 auto;
+}
+
+.hueField {
+    height: 10px;
+    width: 200px;
+    margin-top: 10px;
+    position: relative;
+    margin: 10px auto;
+}
+
+.colorPickerWrapper input,
+.colorPickerWrapper input:hover {
+    border-radius: 0!important;
+    border: 3px solid #d9d9d9!important;
+    width: 400px;
+}
+
+.messageField {
+    margin-top: 15px;
 }

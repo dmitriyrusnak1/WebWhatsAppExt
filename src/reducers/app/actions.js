@@ -27,3 +27,9 @@ export const changeLabel = (id, text) => ({
     id,
     text
 });
+
+export const addNewLabel = (color, label) => ({
+    type: c.ADD_NEW_LABEL,
+    color,
+    label
+});
