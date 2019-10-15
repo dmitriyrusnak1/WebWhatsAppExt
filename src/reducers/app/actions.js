@@ -16,3 +16,14 @@ export const addNewReply = (text) => ({
     type: c.ADD_NEW_REPLY,
     text
 })
+
+export const deleteLabel = (id) => ({
+    type: c.DELETE_LABEL,
+    id
+});
+
+export const changeLabel = (id, text) => ({
+    type: c.CHANGE_LABEL,
+    id,
+    text
+});
