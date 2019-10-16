@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { array, func } from 'prop-types';
+import { array, func, object } from 'prop-types';
+import { isEmpty } from 'lodash';
 import Icon from 'antd/es/icon';
 import Button from 'antd/es/button';
 import { connect } from 'react-redux';
@@ -7,18 +8,21 @@ import { bindActionCreators } from 'redux';
 import EditLabels from './EditLabels';
 import ColorPicker from './ColorPicker';
 import { addNewLabel } from '../../../src/reducers/app/actions';
+import { setUsersLabels } from '../../helpers';
 import * as css from './style.css';
 
 
 
 const propTypes = {
     colorFilters: array,
-    addNewLabel: func
+    addNewLabel: func,
+    selectedUser: object
 };
 
 function LabelsSettings({
     colorFilters,
-    addNewLabel
+    addNewLabel,
+    selectedUser
 }) {
 
     const [addNewLabelMode, setAddNewLabelMode] = useState(false);
@@ -40,7 +44,8 @@ function LabelsSettings({
 
     const handleAddNewLabel = () => {
         if(!newLabel) return null;
-        addNewLabel(color, newLabel);
+        setUsersLabels(color, newLabel, selectedUser.name);
+        addNewLabel(color, newLabel, selectedUser.name);
         setColor('#ffffff');
         setNewLabel('');
     }
@@ -50,7 +55,12 @@ function LabelsSettings({
             <h1>edit exist label</h1>
             {colorFilters.map(item => <EditLabels key={item.id} label={item} />)}
             <div className={css.newLabelButton}>
-                <Button onClick={handleOpenNewLabel}>Add New Label<Icon type="plus" /></Button>
+                <Button
+                    onClick={handleOpenNewLabel}
+                    disabled={isEmpty(selectedUser) ? true : false}
+                >
+                    Add New Label<Icon type="plus" />
+                </Button>
             </div>
             {
                 addNewLabelMode ?
@@ -73,7 +83,8 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 const mapStateToProps = (state) =>({
-    colorFilters: state.app.colorFilters
+    colorFilters: state.app.colorFilters,
+    selectedUser: state.app.selectedUser,
 });
 
 LabelsSettings.propTypes = propTypes;

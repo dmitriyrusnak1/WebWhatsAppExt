@@ -4,6 +4,7 @@ import { object, func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import { bindActionCreators } from 'redux';
 import { deleteLabel, changeLabel } from '../../../src/reducers/app/actions';
+import { deleteUsersLabels, editUsersLabels } from '../../helpers';
 import * as css from './style.css';
 
 
@@ -25,11 +26,13 @@ function EditLabels({
     const [labelValue, setLabelValue] = useState(label.label);
     
     const handleDeleteLabel = () => {
+        deleteUsersLabels(label.id);
         deleteLabel(label.id);
     };
 
     const handleChangeEditMode = () => {
         if(labelValue !== label.label) {
+            editUsersLabels(label.id, labelValue);
             changeLabel(label.id, labelValue);
         }
         setEditMode(!editMode); 
@@ -43,6 +46,7 @@ function EditLabels({
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             if(labelValue !== label.label) {
+                editUsersLabels(label.id, labelValue);
                 changeLabel(label.id, labelValue);
             }
             setEditMode(!editMode);

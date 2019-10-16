@@ -32,9 +32,9 @@ function MediaQueryUploader() {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(isEmpty(fileList[0])) return null;
-        const ProductFormData = new FormData();
-        ProductFormData.append(`file`, fileList[0].originFileObj);
-        // saveUploadedFile(ProductFormData);
+        const replyFormData = new FormData();
+        replyFormData.append(`file`, fileList[0].originFileObj);console.log('///------//////', replyFormData)
+        // saveUploadedFile(replyFormData);
         setFileList([]);
     }
 
