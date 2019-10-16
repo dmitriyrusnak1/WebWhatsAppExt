@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { func } from 'prop-types';
+import { func, array, object } from 'prop-types';
 import { isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -23,7 +23,10 @@ const propTypes = {
     getSelectedUser: func,
     getDefaultUsersNote: func,
     getDefaultUsersLabel: func,
-    getDefaultUsersConnectedLabels: func
+    getDefaultUsersConnectedLabels: func,
+    colorFilters: array,
+    usersConnectedLabels: object
+
 };
 
 function MainWrapper({
@@ -32,7 +35,9 @@ function MainWrapper({
     getDefaultSelectedUser,
     getDefaultUsersNote,
     getDefaultUsersLabel,
-    getDefaultUsersConnectedLabels
+    getDefaultUsersConnectedLabels,
+    colorFilters,
+    usersConnectedLabels
 }) {
 
 
@@ -68,6 +73,7 @@ function MainWrapper({
 
         setTimeout(() => {
             const contactPannel = document.getElementById("pane-side");
+
             contactPannel.addEventListener('click', () => {
                 const selectedUserName = contactPannel.querySelector('._2UaNq._3mMX1 ._19RFN');
                 const selectedUserAvatar = contactPannel.querySelector('._2UaNq._3mMX1 ._3RWII img');
@@ -85,6 +91,29 @@ function MainWrapper({
             });
         }, 3000);
     }, []);
+
+    useEffect(() => {
+        if(!isEmpty(usersConnectedLabels)) {
+            setTimeout(() => {
+                const contactPannel = document.getElementById("pane-side");
+    
+    
+                const contacts = contactPannel.querySelectorAll('._2UaNq ._19RFN');
+                contacts.forEach(item => {
+                    const user = item.innerHTML;
+                    const label = usersConnectedLabels[user];
+    
+                    if(!!label) {
+                        colorFilters.forEach(data => {
+                            if(data.label === label){
+                                item.style.background = data.color;
+                            }
+                        })
+                    }
+                });
+            }, 3000);
+        }
+    }, [usersConnectedLabels]);
 
 
     return (
@@ -106,7 +135,12 @@ const mapDispatchToProps = (dispatch) => ({
     getDefaultUsersConnectedLabels: bindActionCreators(getDefaultUsersConnectedLabels, dispatch)
 });
 
+const mapStateToProps = (state) =>({
+    colorFilters: state.app.colorFilters,
+    usersConnectedLabels: state.app.usersConnectedLabels,
+});
+
 
 MainWrapper.propTypes = propTypes;
 
-export default connect(null, mapDispatchToProps)(MainWrapper);
+export default connect(mapStateToProps, mapDispatchToProps)(MainWrapper);

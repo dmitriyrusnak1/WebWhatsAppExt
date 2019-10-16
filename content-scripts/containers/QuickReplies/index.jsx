@@ -109,6 +109,7 @@ class QuickReplies extends React.Component {
                           <div key={item.id} className={css.colorField}>
                               <div className={css.colorCircle} style={{background: `${item.color}`}} />
                               <p>{item.label}</p>
+                              <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
                           </div> : null
                       )}
                   </div>
