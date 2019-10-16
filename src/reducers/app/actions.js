@@ -17,15 +17,17 @@ export const addNewReply = (text) => ({
     text
 })
 
-export const deleteLabel = (id) => ({
+export const deleteLabel = (id, label) => ({
     type: c.DELETE_LABEL,
-    id
+    id,
+    label
 });
 
-export const changeLabel = (id, text) => ({
+export const changeLabel = (id, text, oldText) => ({
     type: c.CHANGE_LABEL,
     id,
-    text
+    text,
+    oldText
 });
 
 export const addNewLabel = (color, label, user) => ({
@@ -66,3 +68,7 @@ export const getDefaultUsersLabel = (defaultState) => ({
     defaultState
 });
 
+export const getDefaultUsersConnectedLabels = (defaultState) => ({
+    type: c.GET_DEFAULT_USERS_CONNECTED_LABELS,
+    defaultState
+});

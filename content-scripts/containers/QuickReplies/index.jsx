@@ -1,5 +1,5 @@
 import React from "react";
-import { array } from 'prop-types';
+import { array, object } from 'prop-types';
 import Icon from 'antd/es/icon';
 import Modal from 'antd/es/modal';
 import Button from 'antd/es/button';
@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
+import { countFilteredUsers } from '../../helpers';
 import * as css from './style.css';
 
 
@@ -14,6 +15,7 @@ import * as css from './style.css';
 const propTypes = {
   quickReplies: array,
   colorFilters: array,
+  usersConnectedLabels: object
 };
 
 class QuickReplies extends React.Component {
@@ -93,7 +95,7 @@ class QuickReplies extends React.Component {
       choosenFilter
     } = this.state;
 
-    const { quickReplies, colorFilters } = this.props;
+    const { quickReplies, colorFilters, usersConnectedLabels } = this.props;
 
     return <div className='quick-replies'>
       <div className={css.mainBottomAreaWrapper}>
@@ -125,6 +127,7 @@ class QuickReplies extends React.Component {
                               <div className={css.colorField}>
                                   <div className={css.colorCircle} style={{background: `${item.color}`}} />
                                   <p>{item.label}</p>
+                                  <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
                               </div>
                               <div className={css.divider} />
                           </div>)}
@@ -185,7 +188,8 @@ class QuickReplies extends React.Component {
 
 const mapStateToProps = (state) =>({
   quickReplies: state.app.quickReplies,
-  colorFilters: state.app.colorFilters
+  colorFilters: state.app.colorFilters,
+  usersConnectedLabels: state.app.usersConnectedLabels
 });
 
 QuickReplies.propTypes = propTypes;

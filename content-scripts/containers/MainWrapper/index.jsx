@@ -12,7 +12,8 @@ import {
     getSelectedUser,
     getDefaultSelectedUser,
     getDefaultUsersNote,
-    getDefaultUsersLabel
+    getDefaultUsersLabel,
+    getDefaultUsersConnectedLabels
 } from '../../../src/reducers/app/actions';
 
 
@@ -21,7 +22,8 @@ const propTypes = {
     getDefaultQuickReplies: func,
     getSelectedUser: func,
     getDefaultUsersNote: func,
-    getDefaultUsersLabel: func
+    getDefaultUsersLabel: func,
+    getDefaultUsersConnectedLabels: func
 };
 
 function MainWrapper({
@@ -29,7 +31,8 @@ function MainWrapper({
     getSelectedUser,
     getDefaultSelectedUser,
     getDefaultUsersNote,
-    getDefaultUsersLabel
+    getDefaultUsersLabel,
+    getDefaultUsersConnectedLabels
 }) {
 
 
@@ -53,6 +56,13 @@ function MainWrapper({
 
             getDefaultUsersLabel(normalizedData);
         });
+
+        chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
+            if(isEmpty(items)) return {};
+
+            getDefaultUsersConnectedLabels(items.usersConnectedLabels);
+        });
+
 
         getDefaultSelectedUser();
 
@@ -92,7 +102,8 @@ const mapDispatchToProps = (dispatch) => ({
     getSelectedUser: bindActionCreators(getSelectedUser, dispatch),
     getDefaultSelectedUser: bindActionCreators(getDefaultSelectedUser, dispatch),
     getDefaultUsersNote: bindActionCreators(getDefaultUsersNote, dispatch),
-    getDefaultUsersLabel: bindActionCreators(getDefaultUsersLabel, dispatch)
+    getDefaultUsersLabel: bindActionCreators(getDefaultUsersLabel, dispatch),
+    getDefaultUsersConnectedLabels: bindActionCreators(getDefaultUsersConnectedLabels, dispatch)
 });
 
 

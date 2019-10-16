@@ -1,10 +1,12 @@
 
 ///////// common ///////////
 
-export const countFilteredUsers = (label, colorFilters) => {
+export const countFilteredUsers = (label, usersConnectedLabels) => {
     let count = 0;
-    colorFilters.forEach(item => {
-        if(item.label === label) {
+    const values = Object.values(usersConnectedLabels);
+    
+    values.forEach(item => {
+        if(item === label) {
             count = count + 1;
         }
     });
@@ -64,32 +66,44 @@ export const editQuickReply = (id, text) => {
 
 export const setUsersLabels = (color, label, user) => {
 
+    const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+
     chrome.storage.sync.get(['usersLabel'], (items) => {
         if (items.usersLabel == null || items.usersLabel == undefined) {
             items.usersLabel = {};
         }
 
-        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
-
-        const value = {
-            id: newId,
-            color: color,
-            label: label,
-            user: user
-        };
-        items.usersLabel[newId] = value;
+        if(!items.usersLabel[label]) {
+            const value = {
+                id: newId,
+                color: color,
+                label: label,
+            };
+            items.usersLabel[label] = value;
+        } else {
+            items.usersLabel[label].color = color;
+        }
         chrome.storage.sync.set({'usersLabel': {...items.usersLabel}}, () => {});
+    });
+
+    chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
+        if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
+            items.usersConnectedLabels = {};
+        }
+
+        items.usersConnectedLabels[user] = label;
+        chrome.storage.sync.set({'usersConnectedLabels': {...items.usersConnectedLabels}}, () => {});
     });
 }
 
-export const deleteUsersLabels = (id) => {
+export const deleteUsersLabels = (label) => {
     chrome.storage.sync.get(['usersLabel'], (items) => {
         if (items.usersLabel == null || items.usersLabel == undefined) {
             return;
         }
 
         const keys = Object.keys(items.usersLabel);
-        const filteredKeys = keys.filter(key => key !== id);
+        const filteredKeys = keys.filter(key => key !== label);
 
         const filteredObj = filteredKeys.reduce((result, key) => {
             result[key] = items.usersLabel[key];
@@ -98,19 +112,55 @@ export const deleteUsersLabels = (id) => {
 
         chrome.storage.sync.set({'usersLabel': {...filteredObj}}, () => {});
     });
+
+    chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
+        if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
+            return;
+        }
+
+        const keys = Object.keys(items.usersConnectedLabels);
+
+        const filteredObj = keys.reduce((result, key) => {
+            if(items.usersConnectedLabels[key] !== label) {
+                result[key] = items.usersConnectedLabels[key];
+            }
+            return result;
+        }, {});
+
+        chrome.storage.sync.set({'usersConnectedLabels': {...filteredObj}}, () => {});
+    });
 }
 
-export const editUsersLabels = (id, label) => {
+export const editUsersLabels = (id, label, oldLabel) => {
     chrome.storage.sync.get(['usersLabel'], (items) => {
         if (items.usersLabel == null || items.usersLabel == undefined) {
             return;
         }
 
-        items.usersLabel[id].label = label;
-        items.usersLabel[id].id = id;
-        items.usersLabel[id].user = items.usersLabel[id].user;
+        items.usersLabel[label] = items.usersLabel[oldLabel];
+        delete items.usersLabel[oldLabel];
+        items.usersLabel[label].label = label;
 
         chrome.storage.sync.set({'usersLabel': {...items.usersLabel}}, () => {});
+    });
+
+    chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
+        if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
+            return;
+        }
+
+        const keys = Object.keys(items.usersConnectedLabels);
+
+        const filteredObj = keys.reduce((result, key) => {
+            if(items.usersConnectedLabels[key] !== oldLabel) {
+                result[key] = items.usersConnectedLabels[key];
+            } else {
+                result[key] = label;
+            }
+            return result;
+        }, {});
+
+        chrome.storage.sync.set({'usersConnectedLabels': {...filteredObj}}, () => {});
     });
 }
 
