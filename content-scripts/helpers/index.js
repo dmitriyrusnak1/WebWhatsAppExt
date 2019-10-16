@@ -1,4 +1,16 @@
 
+///////// common ///////////
+
+export const countFilteredUsers = (label, colorFilters) => {
+    let count = 0;
+    colorFilters.forEach(item => {
+        if(item.label === label) {
+            count = count + 1;
+        }
+    });
+    return count;
+}
+
 ///////////// QuickReply /////////////
 
 export const setNewQuickReply = (text) => {
