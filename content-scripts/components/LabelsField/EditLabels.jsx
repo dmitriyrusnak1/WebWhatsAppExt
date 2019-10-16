@@ -26,14 +26,14 @@ function EditLabels({
     const [labelValue, setLabelValue] = useState(label.label);
     
     const handleDeleteLabel = () => {
-        deleteUsersLabels(label.id);
-        deleteLabel(label.id);
+        deleteUsersLabels(label.label);
+        deleteLabel(label.id, label.label);
     };
 
     const handleChangeEditMode = () => {
         if(labelValue !== label.label) {
-            editUsersLabels(label.id, labelValue);
-            changeLabel(label.id, labelValue);
+            editUsersLabels(label.id, labelValue, label.label);
+            changeLabel(label.id, labelValue, label.label);
         }
         setEditMode(!editMode); 
     };
@@ -46,8 +46,8 @@ function EditLabels({
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             if(labelValue !== label.label) {
-                editUsersLabels(label.id, labelValue);
-                changeLabel(label.id, labelValue);
+                editUsersLabels(label.id, labelValue, label.label);
+                changeLabel(label.id, labelValue, label.label);
             }
             setEditMode(!editMode);
         }
