@@ -47,11 +47,6 @@ module.exports = {
         ]
       },
       ///////////////////
-      // {
-      //   test: /\.scss$/,
-      //   loader: 'style-loader!css-loader!sass-loader'
-      // },
-
       {
         test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
         use: [
@@ -64,20 +59,6 @@ module.exports = {
           }
         ]
       },
-
-      // {
-      //   test: /\.css$/,
-      //   use: [
-      //     {
-      //       loader: MiniCssExtractPlugin.loader,
-      //       options: {
-      //         hmr: process.env.NODE_ENV === 'development',
-      //         reloadAll: true,
-      //       },
-      //     },
-      //     'css-loader',
-      //   ],
-      // },
 
       {
         test: /\.(sa|sc|c)ss$/,
