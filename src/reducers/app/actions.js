@@ -28,8 +28,41 @@ export const changeLabel = (id, text) => ({
     text
 });
 
-export const addNewLabel = (color, label) => ({
+export const addNewLabel = (color, label, user) => ({
     type: c.ADD_NEW_LABEL,
     color,
-    label
+    label,
+    user
 });
+
+export const getDefaultQuickReplies = (defaultState) => ({
+    type: c.GET_DEFAULT_REPLIES_STATE,
+    defaultState
+});
+
+export const getSelectedUser = (name, image) => ({
+    type: c.SELECT_USER,
+    name,
+    image
+});
+
+export const setUserNotes = (user, note) => ({
+    type: c.ADD_USER_NOTES,
+    user,
+    note
+});
+
+export const getDefaultSelectedUser = () => ({
+    type: c.GET_DEFAULT_SELECTED_USER,
+});
+
+export const getDefaultUsersNote = (defaultState) => ({
+    type: c.GET_DEFAULT_USERS_NOTE,
+    defaultState
+});
+
+export const getDefaultUsersLabel = (defaultState) => ({
+    type: c.GET_DEFAULT_USERS_LABEL,
+    defaultState
+});
+

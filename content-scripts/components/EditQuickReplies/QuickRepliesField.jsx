@@ -4,6 +4,7 @@ import { object, array, func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import { bindActionCreators } from 'redux';
 import { deleteReply, changeReply } from '../../../src/reducers/app/actions';
+import { deleteQuickReply, editQuickReply } from '../../helpers';
 import * as css from './style.css';
 
 
@@ -25,11 +26,13 @@ function QuickRepliesField({
     const [replyValue, setReplyValue] = useState(reply.text);
     
     const handleDeleteReply = () => {
+        deleteQuickReply(reply.id);
         deleteReply(reply.id);
     };
 
     const handleChangeEditMode = () => {
         if(replyValue !== reply.text) {
+            editQuickReply(reply.id, replyValue);
             changeReply(reply.id, replyValue);
         }
         setEditMode(!editMode);
@@ -43,6 +46,7 @@ function QuickRepliesField({
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
             if(replyValue !== reply.text) {
+                editQuickReply(reply.id, replyValue);
                 changeReply(reply.id, replyValue);
             }
             setEditMode(!editMode);
