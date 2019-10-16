@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import isObjectLike from 'lodash/isObjectLike';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
-import { countFilteredUsers } from '../../helpers';
+import { countFilteredUsers, filterContacts } from '../../helpers';
 import * as css from './style.css';
 
 
@@ -82,6 +82,7 @@ class QuickReplies extends React.Component {
       choosenFilter: {...item},
       isFiltersVisible: false
     });
+    filterContacts(document, item);
   }
 
   filteredData = () => {

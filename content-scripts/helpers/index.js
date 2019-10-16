@@ -13,6 +13,30 @@ export const countFilteredUsers = (label, usersConnectedLabels) => {
     return count;
 }
 
+function hex2rgb(c) {
+    var bigint = parseInt(c.split('#')[1], 16);
+    var r = (bigint >> 16) & 255;
+    var g = (bigint >> 8) & 255;
+    var b = bigint & 255;
+
+    return 'rgb(' + r + ', ' + g + ', ' + b + ')';
+}
+
+export const filterContacts = (document, filter) => {
+    const contactPannel = document.getElementById("pane-side");
+
+    const contacts = contactPannel.querySelectorAll('.X7YrQ');
+    contacts.forEach(item => {
+        const nestedNode = item.querySelectorAll('._2UaNq ._19RFN');
+
+        if(nestedNode[0].style.background !== hex2rgb(filter.color)) {
+            item.style.display = 'none';
+        } else {
+            item.style.display = 'block';
+        }
+    });
+}
+
 ///////////// QuickReply /////////////
 
 export const setNewQuickReply = (text) => {
