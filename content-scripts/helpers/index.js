@@ -25,6 +25,7 @@ export const setNewQuickReply = (text) => {
 
         const value = {id: newId, text: text};
         items.quickReplies[newId] = value;
+console.log('--------', {...items.quickReplies})
         chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
     });
 }

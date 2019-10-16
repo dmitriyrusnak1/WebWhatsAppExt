@@ -45,7 +45,7 @@ function MainWrapper({
         chrome.storage.sync.get(['quickReplies'], (items) => {
             if(isEmpty(items)) return [];
             const normalizedData = Object.values(items.quickReplies);
-
+console.log('777777', items.quickReplies)
             getDefaultQuickReplies(normalizedData);
         });
 

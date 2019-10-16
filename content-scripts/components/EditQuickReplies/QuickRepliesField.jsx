@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { object, array, func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import { bindActionCreators } from 'redux';
+import isObjectLike from 'lodash/isObjectLike';
 import { deleteReply, changeReply } from '../../../src/reducers/app/actions';
 import { deleteQuickReply, editQuickReply } from '../../helpers';
 import * as css from './style.css';
@@ -58,7 +59,7 @@ function QuickRepliesField({
         <>
             <div className={css.quickRepliesField}>
                 <div>
-                    {
+                    {/* {
                         !editMode ?
                         <p>{reply.text}</p> :
                         <input
@@ -66,6 +67,16 @@ function QuickRepliesField({
                             onChange={handleChangeReply}
                             onKeyPress={handleKeyPress}
                         />
+                    } */}
+                    {
+                        !editMode ?
+                        <p>{isObjectLike(reply.text) ? 'OBJECT' : reply.text}</p> :
+                            isObjectLike(reply.text) ? null : 
+                            <input
+                                value={replyValue}
+                                onChange={handleChangeReply}
+                                onKeyPress={handleKeyPress}
+                            />
                     }
                 </div>
                 <div>

@@ -7,17 +7,18 @@ import Upload from 'antd/es/upload';
 import Form from 'antd/es/form';
 import { isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
-// import { saveUploadedFile } from '../../../src/reducers/app/actions';
+import { setNewQuickReply } from '../../helpers';
+import { addNewReply } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 
 
 
 const propTypes = {
-    // saveUploadedFile: func
+    addNewReply: func
 };
 
 
-function MediaQueryUploader() {
+function MediaQueryUploader({ addNewReply }) {
 
     const [fileList, setFileList] = React.useState([]);
 
@@ -33,8 +34,9 @@ function MediaQueryUploader() {
         e.preventDefault();
         if(isEmpty(fileList[0])) return null;
         const replyFormData = new FormData();
-        replyFormData.append(`file`, fileList[0].originFileObj);console.log('///------//////', replyFormData)
-        // saveUploadedFile(replyFormData);
+        replyFormData.append(`file`, fileList[0].originFileObj);
+        setNewQuickReply(fileList[0].originFileObj);
+        addNewReply(fileList[0].originFileObj);
         setFileList([]);
     }
 
@@ -78,7 +80,7 @@ function MediaQueryUploader() {
 
 
 const mapDispatchToProps = (dispatch) => ({
-    // saveUploadedFile: bindActionCreators(saveUploadedFile, dispatch),
+    addNewReply: bindActionCreators(addNewReply, dispatch),
 });
 
 
