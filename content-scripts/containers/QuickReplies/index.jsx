@@ -6,7 +6,6 @@ import Button from 'antd/es/button';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import isObjectLike from 'lodash/isObjectLike';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
 import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
 import * as css from './style.css';
@@ -88,9 +87,7 @@ class QuickReplies extends React.Component {
   filteredData = () => {
     const rawData = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0];
     const data = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0].text;
-    // const filter = isObjectLike(data) ? 'OBJECT' : data;
 
-    // const filter = data.split(';')[0].includes('data:') ? <img className={css.storagedImg} src={data} /> : data;
     const filter = convertStrToNode(data, css.storagedImg, !!rawData.fileName ? rawData.fileName : '');
 
     return filter;
@@ -150,7 +147,6 @@ class QuickReplies extends React.Component {
           </div>
           <div className={css.quickRepliesField}>
               <div>
-                  {/* <p>{!choosenReplies ? 'Quick Replies' : quickReplies.filter(item => item.id === choosenReplies)[0].text}</p> */}
                   <p>{!choosenReplies ? 'Quick Replies' : this.filteredData()}</p>
                   <p>
                       <Icon onClick={this.handleOpenQuickReplies} type="down" />
@@ -164,13 +160,8 @@ class QuickReplies extends React.Component {
                       <div>
                           {quickReplies.map((item) =>
                               <React.Fragment key={item.id}>
-                                  {/* <p onClick={this.handleChooseReplies(item.id)}>{!isObjectLike(item.text) ? item.text : 'OBJECT'}</p> */}
-
                                     <p onClick={this.handleChooseReplies(item.id)}>
                                         {
-                                            // item.text.split(';')[0].includes('data:') ?
-                                            //     <img className={css.storagedImg} src={item.text} /> :
-                                            //     item.text
                                             convertStrToNode(item.text, css.storagedImg, !!item.fileName ? item.fileName : '')
                                         }
                                     </p>

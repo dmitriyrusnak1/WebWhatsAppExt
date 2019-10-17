@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import Icon from 'antd/es/icon';
@@ -7,8 +7,8 @@ import Upload from 'antd/es/upload';
 import Form from 'antd/es/form';
 import { isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
-import { setNewQuickReply, setNewQuickReplyMediaQuery } from '../../helpers';
-import { addNewReply, addNewReplyMediaQuery } from '../../../src/reducers/app/actions';
+import { setNewQuickReplyMediaQuery } from '../../helpers';
+import { addNewReplyMediaQuery } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 
 
@@ -19,7 +19,7 @@ const propTypes = {
 };
 
 
-function MediaQueryUploader({ addNewReply, addNewReplyMediaQuery }) {
+function MediaQueryUploader({ addNewReplyMediaQuery }) {
 
     const [fileList, setFileList] = React.useState([]);
 
@@ -39,12 +39,10 @@ function MediaQueryUploader({ addNewReply, addNewReplyMediaQuery }) {
 
         const reader = new FileReader();
         reader.onload = function(e) {
-            //  setNewQuickReply(reader.result);
             setNewQuickReplyMediaQuery(reader.result, fileList[0].originFileObj.name);
-            //  addNewReply(reader.result);
-             addNewReplyMediaQuery(reader.result, fileList[0].originFileObj.name)
-         }
-         reader.readAsDataURL(fileList[0].originFileObj); 
+            addNewReplyMediaQuery(reader.result, fileList[0].originFileObj.name)
+        }
+        reader.readAsDataURL(fileList[0].originFileObj);
 
         setFileList([]);
     }
@@ -89,7 +87,6 @@ function MediaQueryUploader({ addNewReply, addNewReplyMediaQuery }) {
 
 
 const mapDispatchToProps = (dispatch) => ({
-    addNewReply: bindActionCreators(addNewReply, dispatch),
     addNewReplyMediaQuery: bindActionCreators(addNewReplyMediaQuery, dispatch)
 });
 

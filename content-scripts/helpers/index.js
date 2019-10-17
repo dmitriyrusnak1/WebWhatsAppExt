@@ -1,4 +1,4 @@
-import isObjectLike from 'lodash/isObjectLike';
+
 import React from 'react';
 
 ///////// common ///////////
@@ -47,18 +47,13 @@ export const convertStrToNode = (field, className, fileName) => {
         rawData[0].includes('data:') &&
         rawData[1].includes('base64')
     ) {
-        const ext = rawData[0].split('/')[1];
-
         if(rawData[0].includes('image')) {
             return <img className={className} src={field} />
         } else if(rawData[0].includes('audio')) {
-            // return `audioFile.${ext}`;
             return `${fileName}`;
         } else if(rawData[0].includes('text')) {
-            // return `textFile.${ext}`;
             return `${fileName}`;
         } else if(rawData[0].includes('application')) {
-            // return `applicationFile.${ext}`;
             return `${fileName}`;
         }
     } else {
@@ -67,63 +62,6 @@ export const convertStrToNode = (field, className, fileName) => {
 }
 
 ///////////// QuickReply /////////////
-
-// export const setNewQuickReply = (text) => {
-//     chrome.storage.sync.get(['quickReplies'], (items) => {
-//         if (items.quickReplies == null || items.quickReplies == undefined) {
-//             items.quickReplies = {};
-//         }
-
-//         const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
-
-//         const value = {
-//             id: newId,
-//             text: text
-//         };
-//         items.quickReplies[newId] = value;
-// console.log('11111111111', items.quickReplies, text)
-//         chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
-//     });
-// }
-
-
-// export const deleteQuickReply = (id) => {
-//     chrome.storage.sync.get(['quickReplies'], (items) => {
-//         if (items.quickReplies == null || items.quickReplies == undefined) {
-//             return;
-//         }
-
-//         const keys = Object.keys(items.quickReplies);
-//         const filteredKeys = keys.filter(key => key !== id);
-
-//         const filteredObj = filteredKeys.reduce((result, key) => {
-//             result[key] = items.quickReplies[key];
-//             return result;
-//         }, {});
-
-//         chrome.storage.sync.set({'quickReplies': {...filteredObj}}, () => {});
-//     });
-// }
-
-// export const editQuickReply = (id, text) => {
-//     chrome.storage.sync.get(['quickReplies'], (items) => {
-//         if (items.quickReplies == null || items.quickReplies == undefined) {
-//             return;
-//         }
-
-//         items.quickReplies[id].text = text;
-//         items.quickReplies[id].id = id;
-
-//         chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
-//     });
-// }
-
-
-
-
-
-
-
 
 export const setNewQuickReply = (text) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
