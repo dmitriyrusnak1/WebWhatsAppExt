@@ -1,3 +1,4 @@
+import isObjectLike from 'lodash/isObjectLike';
 
 ///////// common ///////////
 
@@ -39,24 +40,84 @@ export const filterContacts = (document, filter) => {
 
 ///////////// QuickReply /////////////
 
+// export const setNewQuickReply = (text) => {
+//     chrome.storage.sync.get(['quickReplies'], (items) => {
+//         if (items.quickReplies == null || items.quickReplies == undefined) {
+//             items.quickReplies = {};
+//         }
+
+//         const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+
+//         const value = {
+//             id: newId,
+//             text: text
+//         };
+//         items.quickReplies[newId] = value;
+// console.log('11111111111', items.quickReplies, text)
+//         chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
+//     });
+// }
+
+
+// export const deleteQuickReply = (id) => {
+//     chrome.storage.sync.get(['quickReplies'], (items) => {
+//         if (items.quickReplies == null || items.quickReplies == undefined) {
+//             return;
+//         }
+
+//         const keys = Object.keys(items.quickReplies);
+//         const filteredKeys = keys.filter(key => key !== id);
+
+//         const filteredObj = filteredKeys.reduce((result, key) => {
+//             result[key] = items.quickReplies[key];
+//             return result;
+//         }, {});
+
+//         chrome.storage.sync.set({'quickReplies': {...filteredObj}}, () => {});
+//     });
+// }
+
+// export const editQuickReply = (id, text) => {
+//     chrome.storage.sync.get(['quickReplies'], (items) => {
+//         if (items.quickReplies == null || items.quickReplies == undefined) {
+//             return;
+//         }
+
+//         items.quickReplies[id].text = text;
+//         items.quickReplies[id].id = id;
+
+//         chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
+//     });
+// }
+
+
+
+
+
+
+
+
 export const setNewQuickReply = (text) => {
-    chrome.storage.sync.get(['quickReplies'], (items) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             items.quickReplies = {};
         }
 
         const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
 
-        const value = {id: newId, text: text};
+        const value = {
+            id: newId,
+            text: text
+        };
         items.quickReplies[newId] = value;
-console.log('--------', {...items.quickReplies})
-        chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
+console.log('11111111111', items.quickReplies, text)
+        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
     });
 }
 
 
 export const deleteQuickReply = (id) => {
-    chrome.storage.sync.get(['quickReplies'], (items) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             return;
         }
@@ -69,12 +130,12 @@ export const deleteQuickReply = (id) => {
             return result;
         }, {});
 
-        chrome.storage.sync.set({'quickReplies': {...filteredObj}}, () => {});
+        chrome.storage.local.set({'quickReplies': {...filteredObj}}, () => {});
     });
 }
 
 export const editQuickReply = (id, text) => {
-    chrome.storage.sync.get(['quickReplies'], (items) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             return;
         }
@@ -82,9 +143,10 @@ export const editQuickReply = (id, text) => {
         items.quickReplies[id].text = text;
         items.quickReplies[id].id = id;
 
-        chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
+        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
     });
 }
+
 
 
 ///////////// UsersLabels /////////////

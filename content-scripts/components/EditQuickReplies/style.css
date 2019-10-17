@@ -44,3 +44,8 @@
 .uploaderFormWrapper {
     text-align: center;
 }
+
+.storagedImg {
+    width: 30px;
+    height: 30px;
+}

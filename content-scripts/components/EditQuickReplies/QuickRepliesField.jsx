@@ -68,10 +68,24 @@ function QuickRepliesField({
                             onKeyPress={handleKeyPress}
                         />
                     } */}
-                    {
+
+
+
+                    {/* {
                         !editMode ?
                         <p>{isObjectLike(reply.text) ? 'OBJECT' : reply.text}</p> :
                             isObjectLike(reply.text) ? null : 
+                            <input
+                                value={replyValue}
+                                onChange={handleChangeReply}
+                                onKeyPress={handleKeyPress}
+                            />
+                    } */}
+
+                    {
+                        !editMode ?
+                        <p>{reply.text.split(';')[0].includes('data:') ? <img className={css.storagedImg} src={reply.text} /> : reply.text}</p> :
+                            reply.text.split(';')[0].includes('data:') ? null : 
                             <input
                                 value={replyValue}
                                 onChange={handleChangeReply}

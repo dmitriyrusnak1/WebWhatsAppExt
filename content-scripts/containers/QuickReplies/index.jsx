@@ -87,7 +87,10 @@ class QuickReplies extends React.Component {
 
   filteredData = () => {
     const data = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0].text;
-    const filter = isObjectLike(data) ? 'OBJECT' : data;
+    // const filter = isObjectLike(data) ? 'OBJECT' : data;
+
+    const filter = data.split(';')[0].includes('data:') ? <img className={css.storagedImg} src={data} /> : data;
+
     return filter;
   }
 
@@ -159,7 +162,16 @@ class QuickReplies extends React.Component {
                       <div>
                           {quickReplies.map((item) =>
                               <React.Fragment key={item.id}>
-                                  <p onClick={this.handleChooseReplies(item.id)}>{!isObjectLike(item.text) ? item.text : 'OBJECT'}</p>
+                                  {/* <p onClick={this.handleChooseReplies(item.id)}>{!isObjectLike(item.text) ? item.text : 'OBJECT'}</p> */}
+
+                                    <p onClick={this.handleChooseReplies(item.id)}>
+                                        {
+                                            item.text.split(';')[0].includes('data:') ?
+                                            <img className={css.storagedImg} src={item.text} /> :
+                                            item.text
+                                        }
+                                    </p>
+
                                   <div className={css.divider} />
                               </React.Fragment>)}
                       </div>

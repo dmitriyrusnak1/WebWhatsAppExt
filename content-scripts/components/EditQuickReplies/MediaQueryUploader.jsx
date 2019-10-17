@@ -35,7 +35,26 @@ function MediaQueryUploader({ addNewReply }) {
         if(isEmpty(fileList[0])) return null;
         const replyFormData = new FormData();
         replyFormData.append(`file`, fileList[0].originFileObj);
-        setNewQuickReply(fileList[0].originFileObj);
+
+
+
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+             // Create a new image.
+             const img = new Image();
+  
+            //  img.src = reader.result;
+            //  localStorage.theImage = reader.result;
+             setNewQuickReply(reader.result);
+         }
+         reader.readAsDataURL(fileList[0].originFileObj);
+
+
+
+
+
+        // setNewQuickReply(fileList[0].originFileObj);
         addNewReply(fileList[0].originFileObj);
         setFileList([]);
     }
