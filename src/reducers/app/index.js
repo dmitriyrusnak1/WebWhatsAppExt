@@ -31,6 +31,13 @@ const quickReplies = (state = initialState.quickReplies, action) => {
             newItem.id = newId;
             newItem.text = action.text;
             return [...state, newItem];
+        case c.ADD_NEW_REPLY_MEDIA_QUERY:
+            const newIdMQ = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+            const newItemMQ = {};
+            newItemMQ.id = newIdMQ;
+            newItemMQ.text = action.text;
+            newItemMQ.fileName = action.fileName;
+            return [...state, newItemMQ];
         default:
             return state;
     }

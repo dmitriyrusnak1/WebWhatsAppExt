@@ -17,6 +17,12 @@ export const addNewReply = (text) => ({
     text
 })
 
+export const addNewReplyMediaQuery = (text, fileName) => ({
+    type: c.ADD_NEW_REPLY_MEDIA_QUERY,
+    text,
+    fileName
+})
+
 export const deleteLabel = (id, label) => ({
     type: c.DELETE_LABEL,
     id,

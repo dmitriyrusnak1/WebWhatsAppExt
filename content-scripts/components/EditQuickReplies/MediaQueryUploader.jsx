@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { func } from 'prop-types';
 import Icon from 'antd/es/icon';
@@ -7,22 +7,26 @@ import Upload from 'antd/es/upload';
 import Form from 'antd/es/form';
 import { isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
-// import { saveUploadedFile } from '../../../src/reducers/app/actions';
+import { setNewQuickReplyMediaQuery } from '../../helpers';
+import { addNewReplyMediaQuery } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 
 
 
 const propTypes = {
-    // saveUploadedFile: func
+    addNewReply: func,
+    addNewReplyMediaQuery: func
 };
 
 
-function MediaQueryUploader() {
+function MediaQueryUploader({ addNewReplyMediaQuery }) {
 
     const [fileList, setFileList] = React.useState([]);
+    const [uploadError, setUploadError] = React.useState('');
 
     const onRemoveUploadFile = () => {
         setFileList([]);
+        setUploadError('');
     };
 
     const onBeforeUpload = () => {
@@ -33,8 +37,20 @@ function MediaQueryUploader() {
         e.preventDefault();
         if(isEmpty(fileList[0])) return null;
         const replyFormData = new FormData();
-        replyFormData.append(`file`, fileList[0].originFileObj);console.log('///------//////', replyFormData)
-        // saveUploadedFile(replyFormData);
+        replyFormData.append(`file`, fileList[0].originFileObj);
+
+        const fileSize = fileList[0].originFileObj.size;
+        if (fileSize >= 5000000) {
+            setUploadError('The file size is too big. Shouldn\'t exceed 5 MB');
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            setNewQuickReplyMediaQuery(reader.result, fileList[0].originFileObj.name);
+            addNewReplyMediaQuery(reader.result, fileList[0].originFileObj.name)
+        }
+        reader.readAsDataURL(fileList[0].originFileObj);
+
         setFileList([]);
     }
 
@@ -67,6 +83,7 @@ function MediaQueryUploader() {
                         <Icon type="plus" />
                     </Button>
                 </Upload>
+                <p className={css.errorField}>{uploadError}</p>
             </Form.Item>
             <Form.Item>
                 {!isEmpty(fileList) && <Button type='save' htmlType="submit">Save</Button>}
@@ -78,7 +95,7 @@ function MediaQueryUploader() {
 
 
 const mapDispatchToProps = (dispatch) => ({
-    // saveUploadedFile: bindActionCreators(saveUploadedFile, dispatch),
+    addNewReplyMediaQuery: bindActionCreators(addNewReplyMediaQuery, dispatch)
 });
 
 

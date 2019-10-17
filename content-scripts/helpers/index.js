@@ -1,4 +1,6 @@
 
+import React from 'react';
+
 ///////// common ///////////
 
 export const countFilteredUsers = (label, usersConnectedLabels) => {
@@ -37,25 +39,70 @@ export const filterContacts = (document, filter) => {
     });
 }
 
+export const convertStrToNode = (field, className, fileName) => {
+    const rawData = field.split(';');
+
+    if(
+        !!rawData[1] &&
+        rawData[0].includes('data:') &&
+        rawData[1].includes('base64')
+    ) {
+        if(rawData[0].includes('image')) {
+            return <img className={className} src={field} />
+        } else if(rawData[0].includes('audio')) {
+            return `${fileName}`;
+        } else if(rawData[0].includes('text')) {
+            return `${fileName}`;
+        } else if(rawData[0].includes('application')) {
+            return `${fileName}`;
+        }
+    } else {
+        return field;
+    }
+}
+
 ///////////// QuickReply /////////////
 
 export const setNewQuickReply = (text) => {
-    chrome.storage.sync.get(['quickReplies'], (items) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             items.quickReplies = {};
         }
 
         const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
 
-        const value = {id: newId, text: text};
+        const value = {
+            id: newId,
+            text: text
+        };
         items.quickReplies[newId] = value;
-        chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
+
+        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
+    });
+}
+
+export const setNewQuickReplyMediaQuery = (text, fileName) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
+        if (items.quickReplies == null || items.quickReplies == undefined) {
+            items.quickReplies = {};
+        }
+
+        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+
+        const value = {
+            id: newId,
+            text: text,
+            fileName: fileName
+        };
+        items.quickReplies[newId] = value;
+
+        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
     });
 }
 
 
 export const deleteQuickReply = (id) => {
-    chrome.storage.sync.get(['quickReplies'], (items) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             return;
         }
@@ -68,12 +115,12 @@ export const deleteQuickReply = (id) => {
             return result;
         }, {});
 
-        chrome.storage.sync.set({'quickReplies': {...filteredObj}}, () => {});
+        chrome.storage.local.set({'quickReplies': {...filteredObj}}, () => {});
     });
 }
 
 export const editQuickReply = (id, text) => {
-    chrome.storage.sync.get(['quickReplies'], (items) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             return;
         }
@@ -81,9 +128,10 @@ export const editQuickReply = (id, text) => {
         items.quickReplies[id].text = text;
         items.quickReplies[id].id = id;
 
-        chrome.storage.sync.set({'quickReplies': {...items.quickReplies}}, () => {});
+        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
     });
 }
+
 
 
 ///////////// UsersLabels /////////////

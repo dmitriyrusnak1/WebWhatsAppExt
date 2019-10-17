@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { object, array, func } from 'prop-types';
+import { object, func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import { bindActionCreators } from 'redux';
 import { deleteReply, changeReply } from '../../../src/reducers/app/actions';
-import { deleteQuickReply, editQuickReply } from '../../helpers';
+import { deleteQuickReply, editQuickReply, convertStrToNode } from '../../helpers';
 import * as css from './style.css';
 
 
@@ -60,12 +60,14 @@ function QuickRepliesField({
                 <div>
                     {
                         !editMode ?
-                        <p>{reply.text}</p> :
-                        <input
-                            value={replyValue}
-                            onChange={handleChangeReply}
-                            onKeyPress={handleKeyPress}
-                        />
+                            <p>{convertStrToNode(reply.text, css.storagedImg, !!reply.fileName ? reply.fileName : '')}</p> :
+                            reply.text.split(';')[0].includes('data:') ?
+                                null : 
+                                <input
+                                    value={replyValue}
+                                    onChange={handleChangeReply}
+                                    onKeyPress={handleKeyPress}
+                                />
                     }
                 </div>
                 <div>

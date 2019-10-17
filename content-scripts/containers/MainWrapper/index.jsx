@@ -42,10 +42,9 @@ function MainWrapper({
 
 
     useEffect(() => {
-        chrome.storage.sync.get(['quickReplies'], (items) => {
+        chrome.storage.local.get(['quickReplies'], (items) => {
             if(isEmpty(items)) return [];
             const normalizedData = Object.values(items.quickReplies);
-
             getDefaultQuickReplies(normalizedData);
         });
 
