@@ -1,4 +1,5 @@
 import isObjectLike from 'lodash/isObjectLike';
+import React from 'react';
 
 ///////// common ///////////
 
@@ -36,6 +37,33 @@ export const filterContacts = (document, filter) => {
             item.style.display = 'block';
         }
     });
+}
+
+export const convertStrToNode = (field, className, fileName) => {
+    const rawData = field.split(';');
+
+    if(
+        !!rawData[1] &&
+        rawData[0].includes('data:') &&
+        rawData[1].includes('base64')
+    ) {
+        const ext = rawData[0].split('/')[1];
+
+        if(rawData[0].includes('image')) {
+            return <img className={className} src={field} />
+        } else if(rawData[0].includes('audio')) {
+            // return `audioFile.${ext}`;
+            return `${fileName}`;
+        } else if(rawData[0].includes('text')) {
+            // return `textFile.${ext}`;
+            return `${fileName}`;
+        } else if(rawData[0].includes('application')) {
+            // return `applicationFile.${ext}`;
+            return `${fileName}`;
+        }
+    } else {
+        return field;
+    }
 }
 
 ///////////// QuickReply /////////////
@@ -110,7 +138,26 @@ export const setNewQuickReply = (text) => {
             text: text
         };
         items.quickReplies[newId] = value;
-console.log('11111111111', items.quickReplies, text)
+
+        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
+    });
+}
+
+export const setNewQuickReplyMediaQuery = (text, fileName) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
+        if (items.quickReplies == null || items.quickReplies == undefined) {
+            items.quickReplies = {};
+        }
+
+        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+
+        const value = {
+            id: newId,
+            text: text,
+            fileName: fileName
+        };
+        items.quickReplies[newId] = value;
+
         chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
     });
 }

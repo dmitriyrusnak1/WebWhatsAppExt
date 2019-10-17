@@ -7,18 +7,19 @@ import Upload from 'antd/es/upload';
 import Form from 'antd/es/form';
 import { isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
-import { setNewQuickReply } from '../../helpers';
-import { addNewReply } from '../../../src/reducers/app/actions';
+import { setNewQuickReply, setNewQuickReplyMediaQuery } from '../../helpers';
+import { addNewReply, addNewReplyMediaQuery } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 
 
 
 const propTypes = {
-    addNewReply: func
+    addNewReply: func,
+    addNewReplyMediaQuery: func
 };
 
 
-function MediaQueryUploader({ addNewReply }) {
+function MediaQueryUploader({ addNewReply, addNewReplyMediaQuery }) {
 
     const [fileList, setFileList] = React.useState([]);
 
@@ -36,26 +37,15 @@ function MediaQueryUploader({ addNewReply }) {
         const replyFormData = new FormData();
         replyFormData.append(`file`, fileList[0].originFileObj);
 
-
-
-
         const reader = new FileReader();
         reader.onload = function(e) {
-             // Create a new image.
-             const img = new Image();
-  
-            //  img.src = reader.result;
-            //  localStorage.theImage = reader.result;
-             setNewQuickReply(reader.result);
+            //  setNewQuickReply(reader.result);
+            setNewQuickReplyMediaQuery(reader.result, fileList[0].originFileObj.name);
+            //  addNewReply(reader.result);
+             addNewReplyMediaQuery(reader.result, fileList[0].originFileObj.name)
          }
-         reader.readAsDataURL(fileList[0].originFileObj);
+         reader.readAsDataURL(fileList[0].originFileObj); 
 
-
-
-
-
-        // setNewQuickReply(fileList[0].originFileObj);
-        addNewReply(fileList[0].originFileObj);
         setFileList([]);
     }
 
@@ -100,6 +90,7 @@ function MediaQueryUploader({ addNewReply }) {
 
 const mapDispatchToProps = (dispatch) => ({
     addNewReply: bindActionCreators(addNewReply, dispatch),
+    addNewReplyMediaQuery: bindActionCreators(addNewReplyMediaQuery, dispatch)
 });
 
 

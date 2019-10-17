@@ -8,7 +8,7 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import isObjectLike from 'lodash/isObjectLike';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
-import { countFilteredUsers, filterContacts } from '../../helpers';
+import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
 import * as css from './style.css';
 
 
@@ -86,10 +86,12 @@ class QuickReplies extends React.Component {
   }
 
   filteredData = () => {
+    const rawData = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0];
     const data = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0].text;
     // const filter = isObjectLike(data) ? 'OBJECT' : data;
 
-    const filter = data.split(';')[0].includes('data:') ? <img className={css.storagedImg} src={data} /> : data;
+    // const filter = data.split(';')[0].includes('data:') ? <img className={css.storagedImg} src={data} /> : data;
+    const filter = convertStrToNode(data, css.storagedImg, !!rawData.fileName ? rawData.fileName : '');
 
     return filter;
   }
@@ -166,9 +168,10 @@ class QuickReplies extends React.Component {
 
                                     <p onClick={this.handleChooseReplies(item.id)}>
                                         {
-                                            item.text.split(';')[0].includes('data:') ?
-                                            <img className={css.storagedImg} src={item.text} /> :
-                                            item.text
+                                            // item.text.split(';')[0].includes('data:') ?
+                                            //     <img className={css.storagedImg} src={item.text} /> :
+                                            //     item.text
+                                            convertStrToNode(item.text, css.storagedImg, !!item.fileName ? item.fileName : '')
                                         }
                                     </p>
 

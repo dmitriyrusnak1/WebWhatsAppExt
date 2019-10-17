@@ -42,19 +42,11 @@ function MainWrapper({
 
 
     useEffect(() => {
-//         chrome.storage.sync.get(['quickReplies'], (items) => {
-//             if(isEmpty(items)) return [];
-//             const normalizedData = Object.values(items.quickReplies);
-// console.log('2222222222', items.quickReplies)
-//             getDefaultQuickReplies(normalizedData);
-//         });
-
-chrome.storage.local.get(['quickReplies'], (items) => {
-    if(isEmpty(items)) return [];
-    const normalizedData = Object.values(items.quickReplies);
-console.log('2222222222', items.quickReplies)
-    getDefaultQuickReplies(normalizedData);
-});
+        chrome.storage.local.get(['quickReplies'], (items) => {
+            if(isEmpty(items)) return [];
+            const normalizedData = Object.values(items.quickReplies);
+            getDefaultQuickReplies(normalizedData);
+        });
 
         chrome.storage.sync.get(['usersNote'], (items) => {
             if(isEmpty(items)) return {};

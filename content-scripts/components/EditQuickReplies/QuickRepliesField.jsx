@@ -5,7 +5,7 @@ import Icon from 'antd/es/icon';
 import { bindActionCreators } from 'redux';
 import isObjectLike from 'lodash/isObjectLike';
 import { deleteReply, changeReply } from '../../../src/reducers/app/actions';
-import { deleteQuickReply, editQuickReply } from '../../helpers';
+import { deleteQuickReply, editQuickReply, convertStrToNode } from '../../helpers';
 import * as css from './style.css';
 
 
@@ -84,13 +84,15 @@ function QuickRepliesField({
 
                     {
                         !editMode ?
-                        <p>{reply.text.split(';')[0].includes('data:') ? <img className={css.storagedImg} src={reply.text} /> : reply.text}</p> :
-                            reply.text.split(';')[0].includes('data:') ? null : 
-                            <input
-                                value={replyValue}
-                                onChange={handleChangeReply}
-                                onKeyPress={handleKeyPress}
-                            />
+                            // <p>{reply.text.split(';')[0].includes('data:') ? <img className={css.storagedImg} src={reply.text} /> : reply.text}</p> :
+                            <p>{convertStrToNode(reply.text, css.storagedImg, !!reply.fileName ? reply.fileName : '')}</p> :
+                            reply.text.split(';')[0].includes('data:') ?
+                                null : 
+                                <input
+                                    value={replyValue}
+                                    onChange={handleChangeReply}
+                                    onKeyPress={handleKeyPress}
+                                />
                     }
                 </div>
                 <div>
