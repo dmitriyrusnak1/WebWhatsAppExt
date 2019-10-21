@@ -13,7 +13,6 @@ const projectStyles = new ExtractTextPlugin('style-[contenthash].css');
 
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const devMode = process.env.NODE_ENV !== 'production';
 
 
 
@@ -120,11 +119,16 @@ module.exports = {
       {}
     ),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': '"' + process.env.NODE_ENV + '"'
+      }
+    }),
 
     ////////////
     new MiniCssExtractPlugin({
-      filename: devMode ? '[name].css' : '[name].[hash].css',
-      chunkFilename: devMode ? '[id].css' : '[id].[hash].css',
+      filename: '[name].css',
+      chunkFilename: '[id].css',
     }),
     ////////////
   ],
