@@ -45,7 +45,7 @@ const middlewares = [sagaMiddleware];
 
 const enhancers = [
     applyMiddleware(...middlewares),
-    persistState(['local', 'comparison']),
+    // persistState(['local', 'comparison']),
 ];
 
 
@@ -53,11 +53,13 @@ const composeEnhancers = composeWithDevTools({
   hostname: "localhost", realtime: true, port: 8000
 });
 
+const enhancersMode = process.env.NODE_ENV === 'development' ? composeEnhancers(...enhancers) : applyMiddleware(...middlewares);
+
 const rootReducer = createReducer();
 const store = createStore(
     rootReducer,
     initialState,
-    composeEnhancers(...enhancers)
+    enhancersMode
 );
 
 sagaMiddleware.run(rootSaga);
