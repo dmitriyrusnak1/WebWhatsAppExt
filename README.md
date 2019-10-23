@@ -19,25 +19,25 @@
 4. Folder src contains the background.js file for the background rendering.
 
 5. Src folder has the following structure:
-    1 Background.js file. Redux store is initialized in this file
-    1 Reducer.js file - connected Redux store reducers
-    1 Saga folder - connected redux-saga. This library is not using in the current implementation and needed for the further using the third-party API.
-    1 Reducers folder contains reducers to interact with the redux store.
-    1 App folder contains the main file - manifest.js (global CSS styles, images, icons)
+    5.1 Background.js file. Redux store is initialized in this file
+    5.2 Reducer.js file - connected Redux store reducers
+    5.3 Saga folder - connected redux-saga. This library is not using in the current implementation and needed for the further using the third-party API.
+    5.4 Reducers folder contains reducers to interact with the redux store.
+    5.5 App folder contains the main file - manifest.js (global CSS styles, images, icons)
 
 6. Content-scripts folder has the following structure:
-    1 APP.jsx - the main file for the inserted extension into app. The separate container is created in this file contain implemented extension with personal id. This container is inserted into WhatsApp 
-    1 Style.scss is intended to connect styles to the used library antd only
-    1 The folder content-scripts/containers contains the main components of the current extension: 
+    6.1 APP.jsx - the main file for the inserted extension into app. The separate container is created in this file contain implemented extension with personal id. This container is inserted into WhatsApp 
+    6.2 Style.scss is intended to connect styles to the used library antd only
+    6.3 The folder content-scripts/containers contains the main components of the current extension: 
         - TopLogo (upper field with the logo) 
         - SideBar (field with Left Navigation Bar)
         - QuickReplies (field with Quick Replies and Filters)
         - MainMenu (right side menu with the main extension info)
         - MainWrapper ( Field combined all previous fields above. Data comes from chrome.storage and saving to redux store)
-    1 The folder content-scripts/components contains separate components placed on the page. ( separate modals, notes, components for the labels settings, quick replies)
-    1 Folder content-scripts/constants  contains global constants 
-    1 Folder content-scripts/global-style contains common styles for the single react components
-    1 Folder content-scripts/helpers contains common functions. Also, functions allow saving data to the chrome.storage.
+    6.4 The folder content-scripts/components contains separate components placed on the page. ( separate modals, notes, components for the labels settings, quick replies)
+    6.5 Folder content-scripts/constants  contains global constants 
+    6.6 Folder content-scripts/global-style contains common styles for the single react components
+    6.7 Folder content-scripts/helpers contains common functions. Also, functions allow saving data to the chrome.storage.
 
 7. States created in redux store: 
     - quickReplies (to store quick replies)
