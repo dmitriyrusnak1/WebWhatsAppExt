@@ -7,7 +7,7 @@
     yarn build
 ```
 
-Project structure:
+## Project structure:
 
 
 1. For the popup page there is created ‘popup-page’ folder. (There is an empty template for the possible future popup implementation)
