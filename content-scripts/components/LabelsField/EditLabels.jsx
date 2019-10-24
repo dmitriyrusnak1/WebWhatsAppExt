@@ -4,7 +4,7 @@ import { object, func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import { bindActionCreators } from 'redux';
 import { deleteLabel, changeLabel } from '../../../src/reducers/app/actions';
-import { deleteUsersLabels, editUsersLabels } from '../../helpers';
+import { deleteUsersLabels, editUsersLabels } from '../../utils';
 import * as css from './style.css';
 
 

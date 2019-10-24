@@ -4,7 +4,8 @@ import { object, func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import { bindActionCreators } from 'redux';
 import { deleteReply, changeReply } from '../../../src/reducers/app/actions';
-import { deleteQuickReply, editQuickReply, convertStrToNode } from '../../helpers';
+import { convertStrToNode } from '../../helpers';
+import { deleteQuickReply, editQuickReply } from '../../utils';
 import * as css from './style.css';
 
 

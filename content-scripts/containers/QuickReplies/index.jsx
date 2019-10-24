@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
-import { countFilteredUsers, filterContacts, convertStrToNode, chooseCurrentQuickReply } from '../../helpers';
+import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
+import { chooseCurrentQuickReply } from '../../utils';
 import { EMAIL_PATTERN } from '../../constants';
 import * as css from './style.css';
 

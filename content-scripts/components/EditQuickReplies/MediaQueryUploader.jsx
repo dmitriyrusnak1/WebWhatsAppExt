@@ -7,7 +7,7 @@ import Upload from 'antd/es/upload';
 import Form from 'antd/es/form';
 import { isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
-import { setNewQuickReplyMediaQuery } from '../../helpers';
+import { setNewQuickReplyMediaQuery } from '../../utils';
 import { addNewReplyMediaQuery } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 

@@ -4,7 +4,7 @@ import { func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import Button from 'antd/es/button';
 import { bindActionCreators } from 'redux';
-import { setNewQuickReply } from '../../helpers';
+import { setNewQuickReply } from '../../utils';
 import { addNewReply } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 
