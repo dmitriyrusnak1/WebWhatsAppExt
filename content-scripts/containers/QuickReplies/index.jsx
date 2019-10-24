@@ -35,7 +35,8 @@ class QuickReplies extends React.Component {
     choosenReplies: '',
     choosenFilter: {},
     isFiltersVisible: false,
-    isEmailValid: false
+    isEmailValid: false,
+    successSending: false
   }
 
 
@@ -79,26 +80,36 @@ class QuickReplies extends React.Component {
     this.setState({
         isModalEmailVisible: !this.state.isModalEmailVisible,
         email: '',
-        isEmailValid: false
+        isEmailValid: false,
+        successSending: false
     });
   }
 
   handleChangeEmail = (e) => {
     const value = e.target.value;
     this.setState({email: value});
+
+    if(!!value){
+        const rule = EMAIL_PATTERN.test(value);
+        if (!rule){
+            this.setState({isEmailValid: false});
+        } else {
+            this.setState({isEmailValid: true});
+        }
+    }
   }
 
   handleSendEmail = (e) => {
     e.preventDefault();
     const { email, isEmailValid } = this.state;
 
-    if(!email || isEmailValid) return null;
-    const rule = EMAIL_PATTERN.test(email);
-        if (rule){
-            this.setState({isEmailValid: true});
-            return null;
+    if(!email || !isEmailValid) {
+        return null;
+    } else {
+        this.setState({ successSending: true });
     }
   }
+
 
   handleChooseReplies = (id) => () => {
     this.setState({
@@ -139,7 +150,8 @@ class QuickReplies extends React.Component {
       choosenReplies,
       isFiltersVisible,
       choosenFilter,
-      isEmailValid
+      isEmailValid,
+      successSending
     } = this.state;
 
     const { quickReplies, colorFilters, usersConnectedLabels } = this.props;
@@ -249,6 +261,7 @@ class QuickReplies extends React.Component {
               handleSendEmail={this.handleSendEmail}
               email={email}
               isEmailValid={isEmailValid}
+              successSending={successSending}
           />
       </Modal>
     </div>;

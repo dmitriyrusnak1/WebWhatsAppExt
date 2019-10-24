@@ -32,3 +32,7 @@
 .successEmail {
     color: green;
 }
+
+.invalidEmail {
+    color: red;
+}

@@ -8,20 +8,22 @@ const propTypes = {
     handleChangeEmail: func,
     handleSendEmail: func,
     email: string,
-    isEmailValid: bool
+    isEmailValid: bool,
+    successSending: bool
 };
 
 function SendEmailWindow({
     handleChangeEmail,
     handleSendEmail,
     email,
-    isEmailValid
+    isEmailValid,
+    successSending
 }) {
     
     const sendIcon = chrome.runtime.getURL("images/sendMessage.svg");
 
     return (
-        <form className={css.newMessageWrapper} onSubmit={handleSendEmail}>
+        <form className={css.newMessageWrapper} onSubmit={handleSendEmail} noValidate>
             <h2>send conversation to email address</h2>
             <div className={css.messageWrapper}>
                 <Input
@@ -38,7 +40,8 @@ function SendEmailWindow({
                     />
                 </button>
             </div>
-            {isEmailValid && <p className={css.successEmail}>Email was sent!</p>}
+            {!isEmailValid && !!email && <p className={css.invalidEmail}>Email is invalid!</p>}
+            {successSending && <p className={css.successEmail}>Email was sent!</p>}
         </form>
     );
 }
