@@ -88,7 +88,7 @@ function MainWrapper({
                     getSelectedUser(name, image);
                 }
             });
-        }, 3000);
+        }, 8000);
     }, []);
 
     useEffect(() => {

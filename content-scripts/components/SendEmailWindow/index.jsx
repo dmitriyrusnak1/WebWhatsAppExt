@@ -1,5 +1,5 @@
 import React from 'react';
-import { string, func } from 'prop-types';
+import { string, func, bool } from 'prop-types';
 import Input from 'antd/es/input';
 import * as css from './style.css';
 
@@ -8,12 +8,14 @@ const propTypes = {
     handleChangeEmail: func,
     handleSendEmail: func,
     email: string,
+    isEmailValid: bool
 };
 
 function SendEmailWindow({
     handleChangeEmail,
     handleSendEmail,
-    email
+    email,
+    isEmailValid
 }) {
     
     const sendIcon = chrome.runtime.getURL("images/sendMessage.svg");
@@ -36,6 +38,7 @@ function SendEmailWindow({
                     />
                 </button>
             </div>
+            {isEmailValid && <p className={css.successEmail}>Email was sent!</p>}
         </form>
     );
 }

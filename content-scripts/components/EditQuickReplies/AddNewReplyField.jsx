@@ -28,6 +28,7 @@ function AddNewReplyField({
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
+            setNewQuickReply(replyValue);
             addNewReply(replyValue);
             setReplyValue('');
         }
@@ -47,13 +48,14 @@ function AddNewReplyField({
             <div>
                 <input
                     value={replyValue}
+                    placeholder='Type new Quick Reply...'
                     onChange={handleChangeReply}
                     onKeyPress={handleKeyPress}
                 />
             </div>
             <div>
                 <Button onClick={handleAddNewReply}>
-                    Add New Quick Reply
+                    Save
                     <Icon type="plus" />
                 </Button>
             </div>

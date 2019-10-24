@@ -3,11 +3,13 @@ import { array, object } from 'prop-types';
 import Icon from 'antd/es/icon';
 import Modal from 'antd/es/modal';
 import Button from 'antd/es/button';
+import Tooltip from 'antd/es/tooltip';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
-import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
+import { countFilteredUsers, filterContacts, convertStrToNode, chooseCurrentQuickReply } from '../../helpers';
+import { EMAIL_PATTERN } from '../../constants';
 import * as css from './style.css';
 
 
@@ -21,6 +23,8 @@ const propTypes = {
 class QuickReplies extends React.Component {
   constructor(props) {
     super(props);
+    this.myRef = React.createRef();
+    this.QRRef = React.createRef();
   }
 
   state = {
@@ -30,8 +34,29 @@ class QuickReplies extends React.Component {
     email: '',
     choosenReplies: '',
     choosenFilter: {},
-    isFiltersVisible: false
+    isFiltersVisible: false,
+    isEmailValid: false
   }
+
+
+  componentWillMount() {
+    document.addEventListener('click', this.handleClickOutside, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside, false);
+  }
+
+  handleClickOutside = (e) => {
+    if (
+        !this.myRef.current.contains(e.target) &&
+        !!this.state.isQuickRepliesVisible &&
+        !this.QRRef.current.contains(e.target)
+    ) {
+        this.setState({ isQuickRepliesVisible: false });
+    }
+  }
+
 
   handleOpenQuickReplies = () => {
     this.setState({isQuickRepliesVisible: !this.state.isQuickRepliesVisible});
@@ -51,8 +76,11 @@ class QuickReplies extends React.Component {
   }
 
   handleCloseModalEmail = () => {
-    this.setState({isModalEmailVisible: !this.state.isModalEmailVisible});
-    this.setState({email: ''});
+    this.setState({
+        isModalEmailVisible: !this.state.isModalEmailVisible,
+        email: '',
+        isEmailValid: false
+    });
   }
 
   handleChangeEmail = (e) => {
@@ -62,7 +90,14 @@ class QuickReplies extends React.Component {
 
   handleSendEmail = (e) => {
     e.preventDefault();
-    this.setState({isModalEmailVisible: !this.state.isModalEmailVisible});
+    const { email, isEmailValid } = this.state;
+
+    if(!email || isEmailValid) return null;
+    const rule = EMAIL_PATTERN.test(email);
+        if (rule){
+            this.setState({isEmailValid: true});
+            return null;
+    }
   }
 
   handleChooseReplies = (id) => () => {
@@ -70,6 +105,7 @@ class QuickReplies extends React.Component {
       choosenReplies: id,
       isQuickRepliesVisible: false
     });
+    chooseCurrentQuickReply(id);
   }
 
   handleOpenFilters = () => {
@@ -102,18 +138,23 @@ class QuickReplies extends React.Component {
       email,
       choosenReplies,
       isFiltersVisible,
-      choosenFilter
+      choosenFilter,
+      isEmailValid
     } = this.state;
 
     const { quickReplies, colorFilters, usersConnectedLabels } = this.props;
 
     return <div className='quick-replies'>
       <div className={css.mainBottomAreaWrapper}>
-          <div className={css.filtersField}>
+          <div
+            className={css.filtersField}
+            onClick={this.handleOpenFilters}
+            style={{background: isFiltersVisible ? '#c8c8c8' : 'inherit'}}
+          >
               {
                   isEmpty(choosenFilter) ?
-                  <p>Filter</p> :
-                  <div>
+                  <p className={css.chosenQuickReplies}>Filter</p> :
+                  <div className={css.chosenQuickReplies}>
                       {colorFilters.map(item => 
                           item.id === choosenFilter.id ?
                           <div key={item.id} className={css.colorField}>
@@ -124,7 +165,7 @@ class QuickReplies extends React.Component {
                       )}
                   </div>
               }
-              <p><Icon onClick={this.handleOpenFilters} type="down" /></p>
+              <p><Icon type="down" /></p>
               <div
                   className={classNames({
                       [css.filters]: true,
@@ -146,19 +187,24 @@ class QuickReplies extends React.Component {
               </div>
           </div>
           <div className={css.quickRepliesField}>
-              <div>
-                  <p>{!choosenReplies ? 'Quick Replies' : this.filteredData()}</p>
+              <div
+                  style={{background: isQuickRepliesVisible || isModalMoreVisible ? '#c8c8c8' : 'inherit'}}
+                  onClick={this.handleOpenQuickReplies}
+                  ref={this.QRRef}
+              >
+                  <p className={css.chosenQuickReplies}>{!choosenReplies ? 'Quick Replies' : this.filteredData()}</p>
                   <p>
-                      <Icon onClick={this.handleOpenQuickReplies} type="down" />
+                      <Icon type="down" />
                   </p>
                   <div
                       className={classNames({
                           [css.quickReplies]: true,
                           [css.disableQuickReplies]: !isQuickRepliesVisible,
                       })}
+                    ref={this.myRef}
                   >
                       <div>
-                          {quickReplies.map((item) =>
+                          {quickReplies.sort((a, b) => b.count - a.count).map((item) =>
                               <React.Fragment key={item.id}>
                                     <p onClick={this.handleChooseReplies(item.id)}>
                                         {
@@ -169,12 +215,20 @@ class QuickReplies extends React.Component {
                                   <div className={css.divider} />
                               </React.Fragment>)}
                       </div>
-                      <Button onClick={this.handleOpenModalMore}>More<Icon type="double-right" /></Button>
+                      <Tooltip overlayStyle={{zIndex: '1111111111111'}} title='Add new Quick Reply or new File'>
+                            <Button onClick={this.handleOpenModalMore}>More<Icon type="double-right" /></Button>
+                      </Tooltip>
                   </div>
               </div>
-              <div className={css.emailButton}>
-                  <Icon type="mail" onClick={this.handleOpenModalEmail} />
-              </div>
+              <Tooltip title="Send Conversation to Email">
+                <div
+                    className={css.emailButton}
+                    onClick={this.handleOpenModalEmail}
+                    style={{background: isModalEmailVisible ? '#c8c8c8' : 'inherit'}}
+                >
+                    <Icon type="mail" />
+                </div>
+              </Tooltip>
           </div>
       </div>
       <Modal
@@ -194,6 +248,7 @@ class QuickReplies extends React.Component {
               handleChangeEmail={this.handleChangeEmail}
               handleSendEmail={this.handleSendEmail}
               email={email}
+              isEmailValid={isEmailValid}
           />
       </Modal>
     </div>;

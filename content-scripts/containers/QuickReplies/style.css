@@ -1,8 +1,15 @@
+@value colors: "../../global-style/colors.css";
+@value (mainGreyColor, hoverGreyColor) from colors;
+
 .mainBottomAreaWrapper {
     display: flex;
     align-items: center;
     width: 100%;
     height: 100%;
+}
+
+.mainBottomAreaWrapper i {
+    color: mainGreyColor;
 }
 
 .mainBottomAreaWrapper>div {
@@ -16,6 +23,8 @@
     width: 30%;
     border-right: 1px solid #ddd;
 }
+
+/* .mainBottomAreaWrapper>div:first-child:hover */
 
 .mainBottomAreaWrapper>div:nth-child(2){
     width: 70%;
@@ -31,6 +40,10 @@ p {
     padding: 0 10px;
 }
 
+.filtersField:hover {
+    background: hoverGreyColor;
+}
+
 .quickReplies,
 .filters {
     border: 1px solid #ddd;
@@ -42,6 +55,7 @@ p {
     background: #fff;
     text-align: center;
     padding-bottom: 20px;
+    background: hoverGreyColor;
 }
 
 .quickReplies>div,
@@ -54,8 +68,11 @@ p {
     padding-left: 10px;
 }
 
-.filters>div>p {
-    font-weight: 700;
+.filters>div>p,
+.quickReplies>div>p {
+    font-weight: 800;
+    font-size: 16px;
+    text-decoration: underline;
 }
 
 .quickReplies>button {
@@ -80,6 +97,7 @@ p {
 
 .quickRepliesField>div:first-child {
     width: calc(100% - 60px);
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -87,9 +105,17 @@ p {
     padding: 0 10px;
 }
 
+.quickRepliesField>div:first-child:hover {
+    background: hoverGreyColor!important;
+}
+
 .quickRepliesField>div:nth-child(2) {
     width: 60px;
 }
+
+/* .quickRepliesField>div:first-child i {
+    color: mainGreyColor;
+} */
 
 .emailButton {
     height: 100%;
@@ -97,9 +123,14 @@ p {
     border-left: 1px solid #ddd;
 }
 
+.emailButton:hover {
+    background: hoverGreyColor!important;
+}
+
 .emailButton>i {
     font-size: 22px;
     margin-top: 15px;
+    color: mainGreyColor;
 }
 
 .colorField {
@@ -121,4 +152,11 @@ p {
 .storagedImg {
     width: 30px;
     height: 30px;
+}
+
+.chosenQuickReplies {
+    color: black;
+    text-decoration: underline;
+    font-size: 16px;
+    font-weight: 800;
 }

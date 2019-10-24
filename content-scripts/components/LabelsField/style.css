@@ -32,7 +32,7 @@
 }
 
 .labelsSettingsWrapper {
-    height: 750px;
+    height: 590px;
 }
 
 .labelsSettingsWrapper button {
@@ -98,4 +98,19 @@
 
 .messageField {
     margin-top: 15px;
+}
+
+.colorPickerFieldsWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.colorPickerFieldsWrapper>div:first-child {
+    width: 350px;
+    margin-right: 30px;
+}
+
+.colorPickerFieldsWrapper>div:first-child input {
+    width: 100%;
 }

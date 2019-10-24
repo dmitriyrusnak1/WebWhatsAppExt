@@ -1,5 +1,6 @@
 
 import React from 'react';
+import Icon from 'antd/es/icon';
 
 ///////// common ///////////
 
@@ -49,12 +50,21 @@ export const convertStrToNode = (field, className, fileName) => {
     ) {
         if(rawData[0].includes('image')) {
             return <img className={className} src={field} />
-        } else if(rawData[0].includes('audio')) {
-            return `${fileName}`;
+        } else if(rawData[0].includes('audio') || rawData[0].includes('video')) {
+            return <React.Fragment>
+                    <Icon style={{marginRight: '10px', color: '#000'}} type="customer-service" />
+                    <span>{fileName}</span>
+                </React.Fragment>;
         } else if(rawData[0].includes('text')) {
-            return `${fileName}`;
+            return <React.Fragment>
+                    <Icon style={{marginRight: '10px', color: '#000'}} type="file-text" />
+                    <span>{fileName}</span>
+                </React.Fragment>;
         } else if(rawData[0].includes('application')) {
-            return `${fileName}`;
+            return <React.Fragment>
+                    <Icon style={{marginRight: '10px', color: '#000'}} type="file-pdf" />
+                    <span>{fileName}</span>
+                </React.Fragment>;
         }
     } else {
         return field;
@@ -73,7 +83,8 @@ export const setNewQuickReply = (text) => {
 
         const value = {
             id: newId,
-            text: text
+            text: text,
+            count: 0
         };
         items.quickReplies[newId] = value;
 
@@ -92,9 +103,22 @@ export const setNewQuickReplyMediaQuery = (text, fileName) => {
         const value = {
             id: newId,
             text: text,
-            fileName: fileName
+            fileName: fileName,
+            count: 0
         };
         items.quickReplies[newId] = value;
+
+        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
+    });
+}
+
+export const chooseCurrentQuickReply = (id) => {
+    chrome.storage.local.get(['quickReplies'], (items) => {
+        if (items.quickReplies == null || items.quickReplies == undefined) {
+            return;
+        }
+
+        items.quickReplies[id].count = items.quickReplies[id].count + 1;
 
         chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
     });

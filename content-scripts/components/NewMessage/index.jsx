@@ -1,5 +1,5 @@
 import React from 'react';
-import { string, func } from 'prop-types';
+import { string, func, bool } from 'prop-types';
 import Input from 'antd/es/input';
 import * as css from './style.css';
 
@@ -9,7 +9,8 @@ const propTypes = {
     handleChangeMessage: func,
     handleSendMessage: func,
     phoneNumber: string,
-    message: string
+    message: string,
+    isMessageSuccess: bool
 };
 
 function NewMessage({
@@ -17,7 +18,8 @@ function NewMessage({
     handleChangeMessage,
     handleSendMessage,
     phoneNumber,
-    message
+    message,
+    isMessageSuccess
 }) {
     
     const sendIcon = chrome.runtime.getURL("images/sendMessage.svg");
@@ -46,6 +48,7 @@ function NewMessage({
                     />
                 </button>
             </div>
+            {isMessageSuccess && <p className={css.successEmail}>Message was sent!</p>}
         </form>
     );
 }
