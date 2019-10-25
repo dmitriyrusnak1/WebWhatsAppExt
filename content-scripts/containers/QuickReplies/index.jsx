@@ -8,16 +8,6 @@ import Checkbox from 'antd/es/checkbox';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    IconLookup,
-    IconDefinition,
-    findIconDefinition,
-    dom,
-    config,
-    library
-  } from '@fortawesome/fontawesome-svg-core'
-import {faCheck} from '@fortawesome/fontawesome-free';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
 import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
 import { chooseCurrentQuickReply } from '../../utils';
@@ -31,14 +21,6 @@ const propTypes = {
   colorFilters: array,
   usersConnectedLabels: object
 };
-
-
-// config.autoReplaceSvg = true;
-// config.observeMutations = true;
-// library.add(faCheck);
-// dom.watch();
-// const CheckLookup = { prefix: 'fas', iconName: 'check' }
-// const checkIconDefinition = findIconDefinition(CheckLookup)
 
 class QuickReplies extends React.Component {
   constructor(props) {
@@ -176,10 +158,6 @@ class QuickReplies extends React.Component {
             choosenFilter: [...choosenFilter, newItem]
         });
     }
-    // this.setState({
-    //   choosenFilter: {...item},
-    // });
-    // filterContacts(document, item);
   }
 
   filteredData = () => {
@@ -220,29 +198,12 @@ class QuickReplies extends React.Component {
       <div className={css.mainBottomAreaWrapper}>
           <div
             className={css.filtersField}
-            // onClick={this.handleOpenFilters}
             style={{background: isFiltersVisible ? '#c8c8c8' : 'inherit'}}
-            // ref={this.FRef}
           >
               <div
                 onClick={this.handleOpenFilters}
-                // style={{background: isFiltersVisible ? '#c8c8c8' : 'inherit'}}
                 ref={this.FRef}
               >
-              {/* {
-                  isEmpty(choosenFilter) ?
-                  <p className={css.chosenQuickReplies}>Filter</p> :
-                  <div className={css.chosenQuickReplies}>
-                      {colorFilters.map(item => 
-                          item.id === choosenFilter.id ?
-                          <div key={item.id} className={css.colorField}>
-                              <div className={css.colorCircle} style={{background: `${item.color}`}} />
-                              <p>{item.label}</p>
-                              <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
-                          </div> : null
-                      )}
-                  </div>
-              } */}
               {
                   isEmpty(choosenFilter) ?
                   <p className={css.chosenQuickReplies}>Filter</p> :
@@ -266,31 +227,16 @@ class QuickReplies extends React.Component {
                   ref={this.myFilterRef}
               >
                   <div>
-                      <p>Filter by:</p>
-                      {/* {colorFilters.map((item) =>
-                          <div onClick={this.handleChooseFilters(item)} key={item.id}>
-                              <div className={css.colorField}>
-                                  <div className={css.colorCircle} style={{background: `${item.color}`}} />
-                                  <p>{item.label}</p>
-                                  <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
-                              </div>
-                              <div className={css.divider} />
-                          </div>)} */}  
+                      <p>Filter by:</p> 
                         {colorFilters.map((item) =>
                             <div
                                 onClick={this.handleChooseFilters(item)}
                                 key={item.id}
-                                // className={classNames({
-                                //     [css.animadetFilters]: this.showChosenFilters(item.id),
-                                // })}
                                 style={{
                                     background: this.showChosenFilters(item.id) ? `${item.color}` : 'inherit',
                                     transition: 'all .6s'
                                 }}
                             >
-                                {/* <input type='checkbox' id={item.id} />
-                                <label for={item.id}></label> */}
-                                {/* <FontAwesomeIcon icon={faCheck} /> */}
                                 <div className={css.checkboxGroup}>
                                     <Checkbox
                                         checked={this.showChosenFilters(item.id)}

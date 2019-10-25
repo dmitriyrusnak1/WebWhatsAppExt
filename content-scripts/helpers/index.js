@@ -26,22 +26,6 @@ function hex2rgb(c) {
     return 'rgb(' + r + ', ' + g + ', ' + b + ')';
 }
 
-// export const filterContacts = (document, filter) => {
-//     const contactPannel = document.getElementById("pane-side");
-
-//     const contacts = contactPannel.querySelectorAll('.X7YrQ');
-//     contacts.forEach(item => {
-//         const nestedNode = item.querySelectorAll('._2UaNq ._19RFN');
-
-//         if(nestedNode[0].style.background !== hex2rgb(filter.color)) {
-//             item.style.display = 'none';
-//         } else {
-//             item.style.display = 'block';
-//         }
-//     });
-// }
-
-
 export const filterContacts = (document, filter) => {
     const contactPannel = document.getElementById("pane-side");
 
