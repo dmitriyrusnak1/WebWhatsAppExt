@@ -24,8 +24,6 @@
     border-right: 1px solid #ddd;
 }
 
-/* .mainBottomAreaWrapper>div:first-child:hover */
-
 .mainBottomAreaWrapper>div:nth-child(2){
     width: 70%;
 }
@@ -41,7 +39,15 @@ p {
 }
 
 .filtersField:hover {
-    background: hoverGreyColor;
+    background: hoverGreyColor!important;
+}
+
+.filtersField>div:first-child {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .quickReplies,
@@ -113,10 +119,6 @@ p {
     width: 60px;
 }
 
-/* .quickRepliesField>div:first-child i {
-    color: mainGreyColor;
-} */
-
 .emailButton {
     height: 100%;
     text-align: center;
@@ -136,7 +138,6 @@ p {
 .colorField {
     display: flex;
     align-items: center;
-    margin-top: 10px;
 }
 
 .colorField>p {
@@ -159,4 +160,12 @@ p {
     text-decoration: underline;
     font-size: 16px;
     font-weight: 800;
+    display: flex;
 }
+
+.checkboxGroup {
+    display: flex;
+    align-items: center;
+    padding: 10px 0 0 10px;
+}
+

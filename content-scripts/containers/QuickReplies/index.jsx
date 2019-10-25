@@ -4,9 +4,20 @@ import Icon from 'antd/es/icon';
 import Modal from 'antd/es/modal';
 import Button from 'antd/es/button';
 import Tooltip from 'antd/es/tooltip';
+import Checkbox from 'antd/es/checkbox';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+    IconLookup,
+    IconDefinition,
+    findIconDefinition,
+    dom,
+    config,
+    library
+  } from '@fortawesome/fontawesome-svg-core'
+import {faCheck} from '@fortawesome/fontawesome-free';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
 import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
 import { chooseCurrentQuickReply } from '../../utils';
@@ -21,11 +32,22 @@ const propTypes = {
   usersConnectedLabels: object
 };
 
+
+// config.autoReplaceSvg = true;
+// config.observeMutations = true;
+// library.add(faCheck);
+// dom.watch();
+// const CheckLookup = { prefix: 'fas', iconName: 'check' }
+// const checkIconDefinition = findIconDefinition(CheckLookup)
+
 class QuickReplies extends React.Component {
   constructor(props) {
     super(props);
     this.myRef = React.createRef();
     this.QRRef = React.createRef();
+
+    this.myFilterRef = React.createRef();
+    this.FRef = React.createRef();
   }
 
   state = {
@@ -34,7 +56,7 @@ class QuickReplies extends React.Component {
     isModalEmailVisible: false,
     email: '',
     choosenReplies: '',
-    choosenFilter: {},
+    choosenFilter: [],
     isFiltersVisible: false,
     isEmailValid: false,
     successSending: false
@@ -48,14 +70,29 @@ class QuickReplies extends React.Component {
   componentWillUnmount() {
     document.removeEventListener('click', this.handleClickOutside, false);
   }
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.choosenFilter !== prevState.choosenFilter) {
+        filterContacts(document, this.state.choosenFilter);
+    }
+  }
+
+
 
   handleClickOutside = (e) => {
-    if (
+    if(
         !this.myRef.current.contains(e.target) &&
         !!this.state.isQuickRepliesVisible &&
         !this.QRRef.current.contains(e.target)
     ) {
         this.setState({ isQuickRepliesVisible: false });
+    }
+
+    if(
+        !this.myFilterRef.current.contains(e.target) &&
+        !!this.state.isFiltersVisible &&
+        !this.FRef.current.contains(e.target)
+    ) {
+        this.setState({ isFiltersVisible: false });
     }
   }
 
@@ -125,11 +162,24 @@ class QuickReplies extends React.Component {
   }
 
   handleChooseFilters = (item) => () => {
-    this.setState({
-      choosenFilter: {...item},
-      isFiltersVisible: false
-    });
-    filterContacts(document, item);
+    const { choosenFilter } = this.state;
+    const filteredChoosenFilter = choosenFilter.filter(elem => elem.id === item.id)[0];
+
+    if(filteredChoosenFilter) {
+        const newData = choosenFilter.filter(elem => elem.id !== item.id);
+        this.setState({
+            choosenFilter: [...newData]
+        });
+    } else {
+        const newItem = {...item};
+        this.setState({
+            choosenFilter: [...choosenFilter, newItem]
+        });
+    }
+    // this.setState({
+    //   choosenFilter: {...item},
+    // });
+    // filterContacts(document, item);
   }
 
   filteredData = () => {
@@ -139,6 +189,15 @@ class QuickReplies extends React.Component {
     const filter = convertStrToNode(data, css.storagedImg, !!rawData.fileName ? rawData.fileName : '');
 
     return filter;
+  }
+
+  showChosenFilters = (id) => {
+      const { choosenFilter } = this.state;
+
+      const filteredData = choosenFilter.filter(item => item.id === id)[0];
+      const choosen = isEmpty(filteredData) ? false : true;
+
+      return choosen;
   }
 
 
@@ -161,10 +220,16 @@ class QuickReplies extends React.Component {
       <div className={css.mainBottomAreaWrapper}>
           <div
             className={css.filtersField}
-            onClick={this.handleOpenFilters}
+            // onClick={this.handleOpenFilters}
             style={{background: isFiltersVisible ? '#c8c8c8' : 'inherit'}}
+            // ref={this.FRef}
           >
-              {
+              <div
+                onClick={this.handleOpenFilters}
+                // style={{background: isFiltersVisible ? '#c8c8c8' : 'inherit'}}
+                ref={this.FRef}
+              >
+              {/* {
                   isEmpty(choosenFilter) ?
                   <p className={css.chosenQuickReplies}>Filter</p> :
                   <div className={css.chosenQuickReplies}>
@@ -177,17 +242,32 @@ class QuickReplies extends React.Component {
                           </div> : null
                       )}
                   </div>
+              } */}
+              {
+                  isEmpty(choosenFilter) ?
+                  <p className={css.chosenQuickReplies}>Filter</p> :
+                  <div className={css.chosenQuickReplies}>
+                      {choosenFilter.map(item => 
+                          <div key={item.id} className={css.colorField}>
+                              <div className={css.colorCircle} style={{background: `${item.color}`}} />
+                              <p>{item.label}</p>
+                              <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>,
+                          </div>
+                      )}
+                  </div>
               }
               <p><Icon type="down" /></p>
+              </div>
               <div
                   className={classNames({
                       [css.filters]: true,
                       [css.disableFilters]: !isFiltersVisible,
                   })}
+                  ref={this.myFilterRef}
               >
                   <div>
                       <p>Filter by:</p>
-                      {colorFilters.map((item) =>
+                      {/* {colorFilters.map((item) =>
                           <div onClick={this.handleChooseFilters(item)} key={item.id}>
                               <div className={css.colorField}>
                                   <div className={css.colorCircle} style={{background: `${item.color}`}} />
@@ -195,7 +275,36 @@ class QuickReplies extends React.Component {
                                   <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
                               </div>
                               <div className={css.divider} />
-                          </div>)}
+                          </div>)} */}  
+                        {colorFilters.map((item) =>
+                            <div
+                                onClick={this.handleChooseFilters(item)}
+                                key={item.id}
+                                // className={classNames({
+                                //     [css.animadetFilters]: this.showChosenFilters(item.id),
+                                // })}
+                                style={{
+                                    background: this.showChosenFilters(item.id) ? `${item.color}` : 'inherit',
+                                    transition: 'all .6s'
+                                }}
+                            >
+                                {/* <input type='checkbox' id={item.id} />
+                                <label for={item.id}></label> */}
+                                {/* <FontAwesomeIcon icon={faCheck} /> */}
+                                <div className={css.checkboxGroup}>
+                                    <Checkbox
+                                        checked={this.showChosenFilters(item.id)}
+                                    />
+                                    <div>
+                                        <div className={css.colorField}>
+                                            <div className={css.colorCircle} style={{background: `${item.color}`}} />
+                                            <p>{item.label}</p>
+                                            <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={css.divider} />
+                            </div>)} 
                   </div>
               </div>
           </div>
