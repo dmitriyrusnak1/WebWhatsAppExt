@@ -164,7 +164,7 @@ class QuickReplies extends React.Component {
     const rawData = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0];
     const data = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0].text;
 
-    const filter = convertStrToNode(data, css.storagedImg, !!rawData.fileName ? rawData.fileName : '');
+    const filter = convertStrToNode(data, !!rawData.fileName ? rawData.fileName : '', css.storagedImg);
 
     return filter;
   }
@@ -276,7 +276,7 @@ class QuickReplies extends React.Component {
                               <React.Fragment key={item.id}>
                                     <p onClick={this.handleChooseReplies(item.id)}>
                                         {
-                                            convertStrToNode(item.text, css.storagedImg, !!item.fileName ? item.fileName : '')
+                                            convertStrToNode(item.text, !!item.fileName ? item.fileName : '', css.storagedImg)
                                         }
                                     </p>
 

@@ -37,6 +37,9 @@ const quickReplies = (state = initialState.quickReplies, action) => {
             newItemMQ.id = newIdMQ;
             newItemMQ.text = action.text;
             newItemMQ.fileName = action.fileName;
+            newItemMQ.fileSize = action.fileSize;
+            newItemMQ.fileType = action.fileType;
+            newItemMQ.fileLastModified = action.fileLastModified;
             return [...state, newItemMQ];
         default:
             return state;

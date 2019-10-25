@@ -61,7 +61,7 @@ function QuickRepliesField({
                 <div>
                     {
                         !editMode ?
-                            <p>{convertStrToNode(reply.text, css.storagedImg, !!reply.fileName ? reply.fileName : '')}</p> :
+                            <p>{convertStrToNode(reply.text, !!reply.fileName ? reply.fileName : '', css.storagedImg)}</p> :
                             reply.text.split(';')[0].includes('data:') ?
                                 null : 
                                 <input

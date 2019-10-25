@@ -157,6 +157,7 @@ p {
 .storagedImg {
     width: 30px;
     height: 30px;
+    margin-right: 10px;
 }
 
 .chosenQuickReplies {

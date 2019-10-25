@@ -4,6 +4,7 @@ import { array } from 'prop-types';
 import QuickRepliesField from './QuickRepliesField';
 import AddNewReplyField from './AddNewReplyField';
 import MediaQueryUploader from './MediaQueryUploader';
+import MediaQueryField from './MediaQueryField';
 import * as css from './style.css';
 
 
@@ -16,13 +17,17 @@ function EditQuickReplies({
     quickReplies,
 }) {
 
+    const mediaQuickReplies = quickReplies.filter(item => !!item.fileName);
+    const textQuickReplies = quickReplies.filter(item => !item.fileName);
+
     return (
         <div className={css.editQuickRepliesWrapper}>
             <h1>text quick reply</h1>
-            {quickReplies.map(item => <QuickRepliesField key={item.id} reply={item} />)}
+            {textQuickReplies.map(item => <QuickRepliesField key={item.id} reply={item} />)}
             <AddNewReplyField />
             <section className={css.mediaQueryField}>
                 <h1>media quick reply</h1>
+                <MediaQueryField mediaQuickReplies={mediaQuickReplies} />
                 <MediaQueryUploader />
             </section>
         </div>

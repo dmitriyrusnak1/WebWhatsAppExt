@@ -20,7 +20,7 @@ export const setNewQuickReply = (text) => {
     });
 }
 
-export const setNewQuickReplyMediaQuery = (text, fileName) => {
+export const setNewQuickReplyMediaQuery = (text, fileName, fileSize, fileType, fileLastModified) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             items.quickReplies = {};
@@ -32,6 +32,9 @@ export const setNewQuickReplyMediaQuery = (text, fileName) => {
             id: newId,
             text: text,
             fileName: fileName,
+            fileSize: fileSize,
+            fileType: fileType,
+            fileLastModified: fileLastModified,
             count: 0
         };
         items.quickReplies[newId] = value;

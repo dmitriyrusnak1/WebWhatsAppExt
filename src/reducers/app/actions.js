@@ -17,10 +17,13 @@ export const addNewReply = (text) => ({
     text
 })
 
-export const addNewReplyMediaQuery = (text, fileName) => ({
+export const addNewReplyMediaQuery = (text, fileName, fileSize, fileType, fileLastModified) => ({
     type: c.ADD_NEW_REPLY_MEDIA_QUERY,
     text,
-    fileName
+    fileName,
+    fileSize,
+    fileType,
+    fileLastModified
 })
 
 export const deleteLabel = (id, label) => ({

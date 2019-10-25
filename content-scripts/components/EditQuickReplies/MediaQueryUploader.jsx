@@ -45,9 +45,11 @@ function MediaQueryUploader({ addNewReplyMediaQuery }) {
             return;
         }
         const reader = new FileReader();
+        const { name, size, type, lastModified } = fileList[0].originFileObj;
+
         reader.onload = function(e) {
-            setNewQuickReplyMediaQuery(reader.result, fileList[0].originFileObj.name);
-            addNewReplyMediaQuery(reader.result, fileList[0].originFileObj.name)
+            setNewQuickReplyMediaQuery(reader.result, name, size, type, lastModified);
+            addNewReplyMediaQuery(reader.result, name, size, type, lastModified)
         }
         reader.readAsDataURL(fileList[0].originFileObj);
 

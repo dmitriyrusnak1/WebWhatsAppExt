@@ -45,7 +45,7 @@ export const filterContacts = (document, filter) => {
     }
 }
 
-export const convertStrToNode = (field, className, fileName) => {
+export const convertStrToNode = (field, fileName, className) => {
     const rawData = field.split(';');
 
     if(
@@ -54,7 +54,10 @@ export const convertStrToNode = (field, className, fileName) => {
         rawData[1].includes('base64')
     ) {
         if(rawData[0].includes('image')) {
-            return <img className={className} src={field} />
+            return <React.Fragment>
+                    <img className={className} src={field} />
+                    <span>{fileName}</span>
+                </React.Fragment>;
         } else if(rawData[0].includes('audio') || rawData[0].includes('video')) {
             return <React.Fragment>
                     <Icon style={{marginRight: '10px', color: '#000'}} type="customer-service" />
