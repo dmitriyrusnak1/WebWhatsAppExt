@@ -1,13 +1,12 @@
+import { genRandomId } from '../helpers';
 
 ///////////// QuickReply /////////////
 
-export const setNewQuickReply = (text) => {
+export const setNewQuickReply = (text, newId) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             items.quickReplies = {};
         }
-
-        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
 
         const value = {
             id: newId,
@@ -20,13 +19,11 @@ export const setNewQuickReply = (text) => {
     });
 }
 
-export const setNewQuickReplyMediaQuery = (text, fileName, fileSize, fileType, fileLastModified) => {
+export const setNewQuickReplyMediaQuery = (text, fileName, fileSize, fileType, fileLastModified, newId) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             items.quickReplies = {};
         }
-
-        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
 
         const value = {
             id: newId,
@@ -91,9 +88,7 @@ export const editQuickReply = (id, text) => {
 
 ///////////// UsersLabels /////////////
 
-export const setUsersLabels = (color, label, user) => {
-
-    const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+export const setUsersLabels = (color, label, user, newId) => {
 
     chrome.storage.sync.get(['usersLabel'], (items) => {
         if (items.usersLabel == null || items.usersLabel == undefined) {
@@ -192,7 +187,7 @@ export const editUsersLabels = (id, label, oldLabel) => {
 }
 
 
-export const deleteCurrentUsersLabels = (label) => {
+export const deleteCurrentUsersLabels = (user) => {
     chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
         if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
             return;
@@ -201,7 +196,7 @@ export const deleteCurrentUsersLabels = (label) => {
         const keys = Object.keys(items.usersConnectedLabels);
 
         const filteredObj = keys.reduce((result, key) => {
-            if(items.usersConnectedLabels[key] !== label) {
+            if(key !== user) {
                 result[key] = items.usersConnectedLabels[key];
             }
             return result;

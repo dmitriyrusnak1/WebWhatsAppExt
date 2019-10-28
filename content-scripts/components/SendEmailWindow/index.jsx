@@ -1,5 +1,6 @@
 import React from 'react';
 import { string, func, bool } from 'prop-types';
+import classNames from 'classnames';
 import Input from 'antd/es/input';
 import * as css from './style.css';
 
@@ -33,7 +34,12 @@ function SendEmailWindow({
                     className={css.messageField}
                     type='email'
                 />
-                <button type="submit">
+                <button
+                    type="submit"
+                    className={classNames({
+                        [css.disableSendButton]: isEmailValid,
+                    })}
+                >
                     <img
                         src={sendIcon}
                         alt="sendIcon"

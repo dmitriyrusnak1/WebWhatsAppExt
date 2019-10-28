@@ -9,6 +9,7 @@ import EditLabels from './EditLabels';
 import ColorPicker from './ColorPicker';
 import { addNewLabel } from '../../../src/reducers/app/actions';
 import { setUsersLabels } from '../../utils';
+import { genRandomId } from '../../helpers';
 import * as css from './style.css';
 
 
@@ -44,8 +45,9 @@ function LabelsSettings({
 
     const handleAddNewLabel = () => {
         if(!newLabel) return null;
-        setUsersLabels(color, newLabel, selectedUser.name);
-        addNewLabel(color, newLabel, selectedUser.name);
+        const newId = genRandomId();
+        setUsersLabels(color, newLabel, selectedUser.name, newId);
+        addNewLabel(color, newLabel, selectedUser.name, newId);
         setColor('#ffffff');
         setNewLabel('');
     }

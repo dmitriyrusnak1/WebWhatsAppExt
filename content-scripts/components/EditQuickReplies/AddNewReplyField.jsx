@@ -5,6 +5,7 @@ import Icon from 'antd/es/icon';
 import Button from 'antd/es/button';
 import { bindActionCreators } from 'redux';
 import { setNewQuickReply } from '../../utils';
+import { genRandomId } from '../../helpers';
 import { addNewReply } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 
@@ -28,16 +29,18 @@ function AddNewReplyField({
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
-            setNewQuickReply(replyValue);
-            addNewReply(replyValue);
+            const newId = genRandomId();
+            setNewQuickReply(replyValue, newId);
+            addNewReply(replyValue, newId);
             setReplyValue('');
         }
     }
 
     const handleAddNewReply = () => {
         if (!!replyValue) {
-            setNewQuickReply(replyValue);
-            addNewReply(replyValue);
+            const newId = genRandomId();
+            setNewQuickReply(replyValue, newId);
+            addNewReply(replyValue, newId);
             setReplyValue('');
         }
     }
