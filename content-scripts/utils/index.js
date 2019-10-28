@@ -1,13 +1,12 @@
+import { genRandomId } from '../helpers';
 
 ///////////// QuickReply /////////////
 
-export const setNewQuickReply = (text) => {
+export const setNewQuickReply = (text, newId) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             items.quickReplies = {};
         }
-
-        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
 
         const value = {
             id: newId,
@@ -20,13 +19,11 @@ export const setNewQuickReply = (text) => {
     });
 }
 
-export const setNewQuickReplyMediaQuery = (text, fileName, fileSize, fileType, fileLastModified) => {
+export const setNewQuickReplyMediaQuery = (text, fileName, fileSize, fileType, fileLastModified, newId) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
             items.quickReplies = {};
         }
-
-        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
 
         const value = {
             id: newId,
@@ -91,9 +88,7 @@ export const editQuickReply = (id, text) => {
 
 ///////////// UsersLabels /////////////
 
-export const setUsersLabels = (color, label, user) => {
-
-    const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+export const setUsersLabels = (color, label, user, newId) => {
 
     chrome.storage.sync.get(['usersLabel'], (items) => {
         if (items.usersLabel == null || items.usersLabel == undefined) {

@@ -26,15 +26,13 @@ const quickReplies = (state = initialState.quickReplies, action) => {
             )
             return [...newReplies];
         case c.ADD_NEW_REPLY:
-            const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
             const newItem = {};
-            newItem.id = newId;
+            newItem.id = action.newId;
             newItem.text = action.text;
             return [...state, newItem];
         case c.ADD_NEW_REPLY_MEDIA_QUERY:
-            const newIdMQ = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
             const newItemMQ = {};
-            newItemMQ.id = newIdMQ;
+            newItemMQ.id = action.newId;
             newItemMQ.text = action.text;
             newItemMQ.fileName = action.fileName;
             newItemMQ.fileSize = action.fileSize;
@@ -61,7 +59,6 @@ const colorFilters = (state = initialState.colorFilters, action) => {
             )
             return [...newLabels];
         case c.ADD_NEW_LABEL:
-            const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
             const rawState = [...state];
             let flag = false;
 
@@ -74,7 +71,7 @@ const colorFilters = (state = initialState.colorFilters, action) => {
             });
             if(!flag) {
                 const value = {
-                    id: newId,
+                    id: action.newId,
                     color: action.color,
                     label: action.label,
                 };
