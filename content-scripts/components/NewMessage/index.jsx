@@ -1,5 +1,6 @@
 import React from 'react';
 import { string, func, bool } from 'prop-types';
+import classNames from 'classnames';
 import Input from 'antd/es/input';
 import * as css from './style.css';
 
@@ -41,7 +42,12 @@ function NewMessage({
                     onChange={handleChangeMessage}
                     className={css.messageField}
                 />
-                <button type="submit">
+                <button
+                    type="submit"
+                    className={classNames({
+                        [css.disableSendButton]: true,
+                    })}
+                >
                     <img
                         src={sendIcon}
                         alt="sendIcon"
