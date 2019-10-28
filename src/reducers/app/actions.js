@@ -46,6 +46,17 @@ export const addNewLabel = (color, label, user) => ({
     user
 });
 
+export const addUserToLabel = (label, user) => ({
+    type: c.ADD_USER_TO_LABEL,
+    label,
+    user
+});
+
+export const deleteUserToLabel = (label) => ({
+    type: c.DELETE_USER_TO_LABEL,
+    label,
+});
+
 export const getDefaultQuickReplies = (defaultState) => ({
     type: c.GET_DEFAULT_REPLIES_STATE,
     defaultState

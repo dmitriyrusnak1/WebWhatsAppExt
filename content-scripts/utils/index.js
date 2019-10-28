@@ -192,6 +192,37 @@ export const editUsersLabels = (id, label, oldLabel) => {
 }
 
 
+export const deleteCurrentUsersLabels = (label) => {
+    chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
+        if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
+            return;
+        }
+
+        const keys = Object.keys(items.usersConnectedLabels);
+
+        const filteredObj = keys.reduce((result, key) => {
+            if(items.usersConnectedLabels[key] !== label) {
+                result[key] = items.usersConnectedLabels[key];
+            }
+            return result;
+        }, {});
+
+        chrome.storage.sync.set({'usersConnectedLabels': {...filteredObj}}, () => {});
+    });
+}
+
+export const addCurrentUsersLabels = (label, user) => {
+    chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
+        if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
+            items.usersConnectedLabels = {};
+        }
+
+        items.usersConnectedLabels[user] = label;
+        chrome.storage.sync.set({'usersConnectedLabels': {...items.usersConnectedLabels}}, () => {});
+    });
+}
+
+
 
 ///////////// UsersNotes /////////////
 
