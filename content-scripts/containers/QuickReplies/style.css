@@ -1,8 +1,15 @@
+@value colors: "../../global-style/colors.css";
+@value (mainGreyColor, hoverGreyColor) from colors;
+
 .mainBottomAreaWrapper {
     display: flex;
     align-items: center;
     width: 100%;
     height: 100%;
+}
+
+.mainBottomAreaWrapper i {
+    color: mainGreyColor;
 }
 
 .mainBottomAreaWrapper>div {
@@ -31,6 +38,18 @@ p {
     padding: 0 10px;
 }
 
+.filtersField:hover {
+    background: hoverGreyColor!important;
+}
+
+.filtersField>div:first-child {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .quickReplies,
 .filters {
     border: 1px solid #ddd;
@@ -42,6 +61,7 @@ p {
     background: #fff;
     text-align: center;
     padding-bottom: 20px;
+    background: hoverGreyColor;
 }
 
 .quickReplies>div,
@@ -54,12 +74,19 @@ p {
     padding-left: 10px;
 }
 
-.filters>div>p {
-    font-weight: 700;
+.filters>div>p,
+.quickReplies>div>p {
+    font-weight: 800;
+    font-size: 16px;
+    text-decoration: underline;
 }
 
 .quickReplies>button {
     margin-top: 30px;
+}
+
+.filters>div>div {
+    cursor: pointer;
 }
 
 .disableQuickReplies,
@@ -80,11 +107,16 @@ p {
 
 .quickRepliesField>div:first-child {
     width: calc(100% - 60px);
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
     position: relative;
     padding: 0 10px;
+}
+
+.quickRepliesField>div:first-child:hover {
+    background: hoverGreyColor!important;
 }
 
 .quickRepliesField>div:nth-child(2) {
@@ -97,15 +129,19 @@ p {
     border-left: 1px solid #ddd;
 }
 
+.emailButton:hover {
+    background: hoverGreyColor!important;
+}
+
 .emailButton>i {
     font-size: 22px;
     margin-top: 15px;
+    color: mainGreyColor;
 }
 
 .colorField {
     display: flex;
     align-items: center;
-    margin-top: 10px;
 }
 
 .colorField>p {
@@ -121,4 +157,20 @@ p {
 .storagedImg {
     width: 30px;
     height: 30px;
+    margin-right: 10px;
 }
+
+.chosenQuickReplies {
+    color: black;
+    text-decoration: underline;
+    font-size: 16px;
+    font-weight: 800;
+    display: flex;
+}
+
+.checkboxGroup {
+    display: flex;
+    align-items: center;
+    padding: 10px 0 0 10px;
+}
+

@@ -7,7 +7,7 @@ import Upload from 'antd/es/upload';
 import Form from 'antd/es/form';
 import { isEmpty } from 'lodash';
 import { bindActionCreators } from 'redux';
-import { setNewQuickReplyMediaQuery } from '../../helpers';
+import { setNewQuickReplyMediaQuery } from '../../utils';
 import { addNewReplyMediaQuery } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 
@@ -45,9 +45,11 @@ function MediaQueryUploader({ addNewReplyMediaQuery }) {
             return;
         }
         const reader = new FileReader();
+        const { name, size, type, lastModified } = fileList[0].originFileObj;
+
         reader.onload = function(e) {
-            setNewQuickReplyMediaQuery(reader.result, fileList[0].originFileObj.name);
-            addNewReplyMediaQuery(reader.result, fileList[0].originFileObj.name)
+            setNewQuickReplyMediaQuery(reader.result, name, size, type, lastModified);
+            addNewReplyMediaQuery(reader.result, name, size, type, lastModified)
         }
         reader.readAsDataURL(fileList[0].originFileObj);
 

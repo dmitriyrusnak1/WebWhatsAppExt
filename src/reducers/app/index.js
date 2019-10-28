@@ -37,6 +37,9 @@ const quickReplies = (state = initialState.quickReplies, action) => {
             newItemMQ.id = newIdMQ;
             newItemMQ.text = action.text;
             newItemMQ.fileName = action.fileName;
+            newItemMQ.fileSize = action.fileSize;
+            newItemMQ.fileType = action.fileType;
+            newItemMQ.fileLastModified = action.fileLastModified;
             return [...state, newItemMQ];
         default:
             return state;
@@ -118,10 +121,12 @@ const usersConnectedLabels = (state = initialState.usersConnectedLabels, action)
             const data = action.defaultState;
             return {...data};
         case c.ADD_NEW_LABEL:
+        case c.ADD_USER_TO_LABEL:
             const rawData = {...state};
             rawData[action.user] = action.label;
             return {...rawData}
         case c.DELETE_LABEL:
+        case c.DELETE_USER_TO_LABEL:
             const keys = Object.keys(state);
 
             const filteredObj = keys.reduce((result, key) => {

@@ -23,27 +23,29 @@ export function MyPicker({
     handleChangeNewLabel,
     newLabel,
     addNewLabel }) {
-  
-      return (
+
+    return (
         <div className={css.colorPickerWrapper}>
-            <div>
-                <h1>create new label</h1>
-                <h3>choose color</h3>
-                <div className={css.saturationField}>
-                    <Saturation hsl={hsl} hsv={hsv} onChange={onChange} />
+            <h1>create new label</h1>
+            <div className={css.colorPickerFieldsWrapper}>
+                <div>
+                    <h3>choose label name</h3>
+                    <Input
+                        placeholder="Type..."
+                        value={newLabel}
+                        onChange={handleChangeNewLabel}
+                        className={css.messageField}
+                    />
                 </div>
-                <div className={css.hueField}>
-                    <Hue hsl={hsl} onChange={onChange} />
+                <div>
+                    <h3>choose color</h3>
+                    <div className={css.saturationField}>
+                        <Saturation hsl={hsl} hsv={hsv} onChange={onChange} />
+                    </div>
+                    <div className={css.hueField}>
+                        <Hue hsl={hsl} onChange={onChange} />
+                    </div>
                 </div>
-            </div>
-            <div>
-                <h3>choose label name</h3>
-                <Input
-                    placeholder="Type..."
-                    value={newLabel}
-                    onChange={handleChangeNewLabel}
-                    className={css.messageField}
-                />
             </div>
             <div>
                 <Button onClick={addNewLabel}>Add</Button>

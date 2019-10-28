@@ -3,11 +3,15 @@ import { array, object } from 'prop-types';
 import Icon from 'antd/es/icon';
 import Modal from 'antd/es/modal';
 import Button from 'antd/es/button';
+import Tooltip from 'antd/es/tooltip';
+import Checkbox from 'antd/es/checkbox';
 import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
 import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
+import { chooseCurrentQuickReply } from '../../utils';
+import { EMAIL_PATTERN } from '../../constants';
 import * as css from './style.css';
 
 
@@ -21,6 +25,11 @@ const propTypes = {
 class QuickReplies extends React.Component {
   constructor(props) {
     super(props);
+    this.myRef = React.createRef();
+    this.QRRef = React.createRef();
+
+    this.myFilterRef = React.createRef();
+    this.FRef = React.createRef();
   }
 
   state = {
@@ -29,9 +38,46 @@ class QuickReplies extends React.Component {
     isModalEmailVisible: false,
     email: '',
     choosenReplies: '',
-    choosenFilter: {},
-    isFiltersVisible: false
+    choosenFilter: [],
+    isFiltersVisible: false,
+    isEmailValid: false,
+    successSending: false
   }
+
+
+  componentWillMount() {
+    document.addEventListener('click', this.handleClickOutside, false);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('click', this.handleClickOutside, false);
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if(this.state.choosenFilter !== prevState.choosenFilter) {
+        filterContacts(document, this.state.choosenFilter);
+    }
+  }
+
+
+
+  handleClickOutside = (e) => {
+    if(
+        !this.myRef.current.contains(e.target) &&
+        !!this.state.isQuickRepliesVisible &&
+        !this.QRRef.current.contains(e.target)
+    ) {
+        this.setState({ isQuickRepliesVisible: false });
+    }
+
+    if(
+        !this.myFilterRef.current.contains(e.target) &&
+        !!this.state.isFiltersVisible &&
+        !this.FRef.current.contains(e.target)
+    ) {
+        this.setState({ isFiltersVisible: false });
+    }
+  }
+
 
   handleOpenQuickReplies = () => {
     this.setState({isQuickRepliesVisible: !this.state.isQuickRepliesVisible});
@@ -51,25 +97,46 @@ class QuickReplies extends React.Component {
   }
 
   handleCloseModalEmail = () => {
-    this.setState({isModalEmailVisible: !this.state.isModalEmailVisible});
-    this.setState({email: ''});
+    this.setState({
+        isModalEmailVisible: !this.state.isModalEmailVisible,
+        email: '',
+        isEmailValid: false,
+        successSending: false
+    });
   }
 
   handleChangeEmail = (e) => {
     const value = e.target.value;
     this.setState({email: value});
+
+    if(!!value){
+        const rule = EMAIL_PATTERN.test(value);
+        if (!rule){
+            this.setState({isEmailValid: false});
+        } else {
+            this.setState({isEmailValid: true});
+        }
+    }
   }
 
   handleSendEmail = (e) => {
     e.preventDefault();
-    this.setState({isModalEmailVisible: !this.state.isModalEmailVisible});
+    const { email, isEmailValid } = this.state;
+
+    if(!email || !isEmailValid) {
+        return null;
+    } else {
+        this.setState({ successSending: true });
+    }
   }
+
 
   handleChooseReplies = (id) => () => {
     this.setState({
       choosenReplies: id,
       isQuickRepliesVisible: false
     });
+    chooseCurrentQuickReply(id);
   }
 
   handleOpenFilters = () => {
@@ -77,20 +144,38 @@ class QuickReplies extends React.Component {
   }
 
   handleChooseFilters = (item) => () => {
-    this.setState({
-      choosenFilter: {...item},
-      isFiltersVisible: false
-    });
-    filterContacts(document, item);
+    const { choosenFilter } = this.state;
+    const filteredChoosenFilter = choosenFilter.filter(elem => elem.id === item.id)[0];
+
+    if(filteredChoosenFilter) {
+        const newData = choosenFilter.filter(elem => elem.id !== item.id);
+        this.setState({
+            choosenFilter: [...newData]
+        });
+    } else {
+        const newItem = {...item};
+        this.setState({
+            choosenFilter: [...choosenFilter, newItem]
+        });
+    }
   }
 
   filteredData = () => {
     const rawData = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0];
     const data = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0].text;
 
-    const filter = convertStrToNode(data, css.storagedImg, !!rawData.fileName ? rawData.fileName : '');
+    const filter = convertStrToNode(data, !!rawData.fileName ? rawData.fileName : '', css.storagedImg);
 
     return filter;
+  }
+
+  showChosenFilters = (id) => {
+      const { choosenFilter } = this.state;
+
+      const filteredData = choosenFilter.filter(item => item.id === id)[0];
+      const choosen = isEmpty(filteredData) ? false : true;
+
+      return choosen;
   }
 
 
@@ -102,79 +187,116 @@ class QuickReplies extends React.Component {
       email,
       choosenReplies,
       isFiltersVisible,
-      choosenFilter
+      choosenFilter,
+      isEmailValid,
+      successSending
     } = this.state;
 
     const { quickReplies, colorFilters, usersConnectedLabels } = this.props;
 
     return <div className='quick-replies'>
       <div className={css.mainBottomAreaWrapper}>
-          <div className={css.filtersField}>
+          <div
+            className={css.filtersField}
+            style={{background: isFiltersVisible ? '#c8c8c8' : 'inherit'}}
+          >
+              <div
+                onClick={this.handleOpenFilters}
+                ref={this.FRef}
+              >
               {
                   isEmpty(choosenFilter) ?
-                  <p>Filter</p> :
-                  <div>
-                      {colorFilters.map(item => 
-                          item.id === choosenFilter.id ?
+                  <p className={css.chosenQuickReplies}>Filter</p> :
+                  <div className={css.chosenQuickReplies}>
+                      {choosenFilter.map(item => 
                           <div key={item.id} className={css.colorField}>
                               <div className={css.colorCircle} style={{background: `${item.color}`}} />
                               <p>{item.label}</p>
-                              <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
-                          </div> : null
+                              <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>,
+                          </div>
                       )}
                   </div>
               }
-              <p><Icon onClick={this.handleOpenFilters} type="down" /></p>
+              <p><Icon type="down" /></p>
+              </div>
               <div
                   className={classNames({
                       [css.filters]: true,
                       [css.disableFilters]: !isFiltersVisible,
                   })}
+                  ref={this.myFilterRef}
               >
                   <div>
-                      <p>Filter by:</p>
-                      {colorFilters.map((item) =>
-                          <div onClick={this.handleChooseFilters(item)} key={item.id}>
-                              <div className={css.colorField}>
-                                  <div className={css.colorCircle} style={{background: `${item.color}`}} />
-                                  <p>{item.label}</p>
-                                  <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
-                              </div>
-                              <div className={css.divider} />
-                          </div>)}
+                      <p>Filter by:</p> 
+                        {colorFilters.map((item) =>
+                            <div
+                                onClick={this.handleChooseFilters(item)}
+                                key={item.id}
+                                style={{
+                                    background: this.showChosenFilters(item.id) ? `${item.color}` : 'inherit',
+                                    transition: 'all .6s'
+                                }}
+                            >
+                                <div className={css.checkboxGroup}>
+                                    <Checkbox
+                                        checked={this.showChosenFilters(item.id)}
+                                    />
+                                    <div>
+                                        <div className={css.colorField}>
+                                            <div className={css.colorCircle} style={{background: `${item.color}`}} />
+                                            <p>{item.label}</p>
+                                            <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className={css.divider} />
+                            </div>)} 
                   </div>
               </div>
           </div>
           <div className={css.quickRepliesField}>
-              <div>
-                  <p>{!choosenReplies ? 'Quick Replies' : this.filteredData()}</p>
+              <div
+                  style={{background: isQuickRepliesVisible || isModalMoreVisible ? '#c8c8c8' : 'inherit'}}
+                  onClick={this.handleOpenQuickReplies}
+                  ref={this.QRRef}
+              >
+                  <p className={css.chosenQuickReplies}>{!choosenReplies ? 'Quick Replies' : this.filteredData()}</p>
                   <p>
-                      <Icon onClick={this.handleOpenQuickReplies} type="down" />
+                      <Icon type="down" />
                   </p>
                   <div
                       className={classNames({
                           [css.quickReplies]: true,
                           [css.disableQuickReplies]: !isQuickRepliesVisible,
                       })}
+                    ref={this.myRef}
                   >
                       <div>
-                          {quickReplies.map((item) =>
+                          {quickReplies.sort((a, b) => b.count - a.count).map((item) =>
                               <React.Fragment key={item.id}>
                                     <p onClick={this.handleChooseReplies(item.id)}>
                                         {
-                                            convertStrToNode(item.text, css.storagedImg, !!item.fileName ? item.fileName : '')
+                                            convertStrToNode(item.text, !!item.fileName ? item.fileName : '', css.storagedImg)
                                         }
                                     </p>
 
                                   <div className={css.divider} />
                               </React.Fragment>)}
                       </div>
-                      <Button onClick={this.handleOpenModalMore}>More<Icon type="double-right" /></Button>
+                      <Tooltip overlayStyle={{zIndex: '1111111111111'}} title='Add new Quick Reply or new File'>
+                            <Button onClick={this.handleOpenModalMore}>More<Icon type="double-right" /></Button>
+                      </Tooltip>
                   </div>
               </div>
-              <div className={css.emailButton}>
-                  <Icon type="mail" onClick={this.handleOpenModalEmail} />
-              </div>
+              <Tooltip title="Send Conversation to Email">
+                <div
+                    className={css.emailButton}
+                    onClick={this.handleOpenModalEmail}
+                    style={{background: isModalEmailVisible ? '#c8c8c8' : 'inherit'}}
+                >
+                    <Icon type="mail" />
+                </div>
+              </Tooltip>
           </div>
       </div>
       <Modal
@@ -194,6 +316,8 @@ class QuickReplies extends React.Component {
               handleChangeEmail={this.handleChangeEmail}
               handleSendEmail={this.handleSendEmail}
               email={email}
+              isEmailValid={isEmailValid}
+              successSending={successSending}
           />
       </Modal>
     </div>;

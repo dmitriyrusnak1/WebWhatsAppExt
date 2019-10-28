@@ -4,7 +4,8 @@ import { object, func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import { bindActionCreators } from 'redux';
 import { deleteReply, changeReply } from '../../../src/reducers/app/actions';
-import { deleteQuickReply, editQuickReply, convertStrToNode } from '../../helpers';
+import { convertStrToNode } from '../../helpers';
+import { deleteQuickReply, editQuickReply } from '../../utils';
 import * as css from './style.css';
 
 
@@ -60,7 +61,7 @@ function QuickRepliesField({
                 <div>
                     {
                         !editMode ?
-                            <p>{convertStrToNode(reply.text, css.storagedImg, !!reply.fileName ? reply.fileName : '')}</p> :
+                            <p>{convertStrToNode(reply.text, !!reply.fileName ? reply.fileName : '', css.storagedImg)}</p> :
                             reply.text.split(';')[0].includes('data:') ?
                                 null : 
                                 <input

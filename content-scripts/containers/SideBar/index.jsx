@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from 'antd/es/modal';
+import Tooltip from 'antd/es/tooltip';
 import { NewMessage } from '../../components';
 import * as css from './style.css';
 
@@ -14,6 +15,7 @@ function SideBar() {
 
     const [phoneNumber, setPhoneNumber] = useState(null);
     const [message, setMessage] = useState('');
+    const [isMessageSuccess, setIsMessageSuccess] = useState(false);
 
     const handleChangePhone = (e) => {
         const value = e.target.value;
@@ -27,8 +29,10 @@ function SideBar() {
 
     const handleSendMessage = (e) => {
         e.preventDefault();
+        if(!message || !phoneNumber) return null;
         setPhoneNumber(null);
         setMessage('');
+        setIsMessageSuccess(true);
     }
 
     const handleOpenModal = () => {
@@ -39,6 +43,7 @@ function SideBar() {
         setModalVisible(!isModalVisible);
         setPhoneNumber(null);
         setMessage('');
+        setIsMessageSuccess(false);
     }
 
     return (
@@ -55,9 +60,11 @@ function SideBar() {
                         <img src={commentsIcon} alt="commentsIcon" />
                     </div>
                 </div>
-                <div className={css.iconWrapper} onClick={handleOpenModal}>
-                    <img src={plusIcon} alt="plusIcon" />
-                </div>
+                <Tooltip title="Send message to new contact" placement="right">
+                    <div className={css.iconWrapper} onClick={handleOpenModal}>
+                        <img src={plusIcon} alt="plusIcon" />
+                    </div>
+                </Tooltip>
             </div>
             <Modal
                 visible={isModalVisible}
@@ -70,6 +77,7 @@ function SideBar() {
                     handleSendMessage={handleSendMessage}
                     phoneNumber={phoneNumber}
                     message={message}
+                    isMessageSuccess={isMessageSuccess}
                 />
             </Modal>
         </div>
