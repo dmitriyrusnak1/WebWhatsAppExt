@@ -108,6 +108,8 @@ function MainWrapper({
                                 item.style.background = data.color;
                             }
                         })
+                    } else {
+                        item.style.background = 'inherit';
                     }
                 });
             }, 3000);
