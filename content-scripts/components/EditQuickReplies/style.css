@@ -1,3 +1,7 @@
+@value colors: "../../global-style/colors.css";
+@value (mainBlueColor) from colors;
+
+
 .editQuickRepliesWrapper h1 {
     text-transform: capitalize;
     text-align: center;
@@ -41,15 +45,25 @@
     margin-top: 70px;
 }
 
+.mediaQueryTable {
+    margin: 30px 0;
+}
+
 .uploaderFormWrapper {
     text-align: center;
+}
+
+.errorField {
+    color: red;
 }
 
 .storagedImg {
     width: 30px;
     height: 30px;
+    margin-right: 10px;
 }
 
-.errorField {
-    color: red;
+.deleteTableButton {
+    color: mainBlueColor;
+    cursor: pointer;
 }

@@ -12,3 +12,6 @@ export const COLOR_LABELS = [
     {id: 'f54e56rfge88ref', color: '#658224', label: 'noom', user: 'user'},
     {id: 'wdew78w7dw7d8w4w5ed', color: '#b75a03', label: 'rood', user: 'user'}
 ];
+
+
+export const EMAIL_PATTERN = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;

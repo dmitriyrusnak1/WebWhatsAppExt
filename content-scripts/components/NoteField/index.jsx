@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 import Input from 'antd/es/input';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { setUsersNote } from '../../helpers';
+import { setUsersNote } from '../../utils';
 import { setUserNotes } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 

@@ -8,7 +8,7 @@ import { bindActionCreators } from 'redux';
 import EditLabels from './EditLabels';
 import ColorPicker from './ColorPicker';
 import { addNewLabel } from '../../../src/reducers/app/actions';
-import { setUsersLabels } from '../../helpers';
+import { setUsersLabels } from '../../utils';
 import * as css from './style.css';
 
 

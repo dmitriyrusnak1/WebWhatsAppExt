@@ -4,7 +4,7 @@ import { func } from 'prop-types';
 import Icon from 'antd/es/icon';
 import Button from 'antd/es/button';
 import { bindActionCreators } from 'redux';
-import { setNewQuickReply } from '../../helpers';
+import { setNewQuickReply } from '../../utils';
 import { addNewReply } from '../../../src/reducers/app/actions';
 import * as css from './style.css';
 
@@ -28,6 +28,7 @@ function AddNewReplyField({
 
     const handleKeyPress = (e) => {
         if (e.key === 'Enter') {
+            setNewQuickReply(replyValue);
             addNewReply(replyValue);
             setReplyValue('');
         }
@@ -47,13 +48,14 @@ function AddNewReplyField({
             <div>
                 <input
                     value={replyValue}
+                    placeholder='Type new Quick Reply...'
                     onChange={handleChangeReply}
                     onKeyPress={handleKeyPress}
                 />
             </div>
             <div>
                 <Button onClick={handleAddNewReply}>
-                    Add New Quick Reply
+                    Save
                     <Icon type="plus" />
                 </Button>
             </div>

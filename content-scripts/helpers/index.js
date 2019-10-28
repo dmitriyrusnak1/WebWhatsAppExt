@@ -1,5 +1,7 @@
 
 import React from 'react';
+import Icon from 'antd/es/icon';
+import { isEmpty } from 'lodash';
 
 ///////// common ///////////
 
@@ -31,15 +33,19 @@ export const filterContacts = (document, filter) => {
     contacts.forEach(item => {
         const nestedNode = item.querySelectorAll('._2UaNq ._19RFN');
 
-        if(nestedNode[0].style.background !== hex2rgb(filter.color)) {
-            item.style.display = 'none';
-        } else {
+        const connectedColors = filter.filter(elem => nestedNode[0].style.background === hex2rgb(elem.color))[0];
+        if(!isEmpty(connectedColors)) {
             item.style.display = 'block';
+        } else {
+            item.style.display = 'none';
         }
     });
+    if(isEmpty(filter)) {
+        contacts.forEach(item => item.style.display = 'block');
+    }
 }
 
-export const convertStrToNode = (field, className, fileName) => {
+export const convertStrToNode = (field, fileName, className) => {
     const rawData = field.split(';');
 
     if(
@@ -48,204 +54,27 @@ export const convertStrToNode = (field, className, fileName) => {
         rawData[1].includes('base64')
     ) {
         if(rawData[0].includes('image')) {
-            return <img className={className} src={field} />
-        } else if(rawData[0].includes('audio')) {
-            return `${fileName}`;
+            return <React.Fragment>
+                    <img className={className} src={field} />
+                    <span>{fileName}</span>
+                </React.Fragment>;
+        } else if(rawData[0].includes('audio') || rawData[0].includes('video')) {
+            return <React.Fragment>
+                    <Icon style={{marginRight: '10px', color: '#000'}} type="customer-service" />
+                    <span>{fileName}</span>
+                </React.Fragment>;
         } else if(rawData[0].includes('text')) {
-            return `${fileName}`;
+            return <React.Fragment>
+                    <Icon style={{marginRight: '10px', color: '#000'}} type="file-text" />
+                    <span>{fileName}</span>
+                </React.Fragment>;
         } else if(rawData[0].includes('application')) {
-            return `${fileName}`;
+            return <React.Fragment>
+                    <Icon style={{marginRight: '10px', color: '#000'}} type="file-pdf" />
+                    <span>{fileName}</span>
+                </React.Fragment>;
         }
     } else {
         return field;
     }
-}
-
-///////////// QuickReply /////////////
-
-export const setNewQuickReply = (text) => {
-    chrome.storage.local.get(['quickReplies'], (items) => {
-        if (items.quickReplies == null || items.quickReplies == undefined) {
-            items.quickReplies = {};
-        }
-
-        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
-
-        const value = {
-            id: newId,
-            text: text
-        };
-        items.quickReplies[newId] = value;
-
-        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
-    });
-}
-
-export const setNewQuickReplyMediaQuery = (text, fileName) => {
-    chrome.storage.local.get(['quickReplies'], (items) => {
-        if (items.quickReplies == null || items.quickReplies == undefined) {
-            items.quickReplies = {};
-        }
-
-        const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
-
-        const value = {
-            id: newId,
-            text: text,
-            fileName: fileName
-        };
-        items.quickReplies[newId] = value;
-
-        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
-    });
-}
-
-
-export const deleteQuickReply = (id) => {
-    chrome.storage.local.get(['quickReplies'], (items) => {
-        if (items.quickReplies == null || items.quickReplies == undefined) {
-            return;
-        }
-
-        const keys = Object.keys(items.quickReplies);
-        const filteredKeys = keys.filter(key => key !== id);
-
-        const filteredObj = filteredKeys.reduce((result, key) => {
-            result[key] = items.quickReplies[key];
-            return result;
-        }, {});
-
-        chrome.storage.local.set({'quickReplies': {...filteredObj}}, () => {});
-    });
-}
-
-export const editQuickReply = (id, text) => {
-    chrome.storage.local.get(['quickReplies'], (items) => {
-        if (items.quickReplies == null || items.quickReplies == undefined) {
-            return;
-        }
-
-        items.quickReplies[id].text = text;
-        items.quickReplies[id].id = id;
-
-        chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
-    });
-}
-
-
-
-///////////// UsersLabels /////////////
-
-export const setUsersLabels = (color, label, user) => {
-
-    const newId = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
-
-    chrome.storage.sync.get(['usersLabel'], (items) => {
-        if (items.usersLabel == null || items.usersLabel == undefined) {
-            items.usersLabel = {};
-        }
-
-        if(!items.usersLabel[label]) {
-            const value = {
-                id: newId,
-                color: color,
-                label: label,
-            };
-            items.usersLabel[label] = value;
-        } else {
-            items.usersLabel[label].color = color;
-        }
-        chrome.storage.sync.set({'usersLabel': {...items.usersLabel}}, () => {});
-    });
-
-    chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
-        if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
-            items.usersConnectedLabels = {};
-        }
-
-        items.usersConnectedLabels[user] = label;
-        chrome.storage.sync.set({'usersConnectedLabels': {...items.usersConnectedLabels}}, () => {});
-    });
-}
-
-export const deleteUsersLabels = (label) => {
-    chrome.storage.sync.get(['usersLabel'], (items) => {
-        if (items.usersLabel == null || items.usersLabel == undefined) {
-            return;
-        }
-
-        const keys = Object.keys(items.usersLabel);
-        const filteredKeys = keys.filter(key => key !== label);
-
-        const filteredObj = filteredKeys.reduce((result, key) => {
-            result[key] = items.usersLabel[key];
-            return result;
-        }, {});
-
-        chrome.storage.sync.set({'usersLabel': {...filteredObj}}, () => {});
-    });
-
-    chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
-        if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
-            return;
-        }
-
-        const keys = Object.keys(items.usersConnectedLabels);
-
-        const filteredObj = keys.reduce((result, key) => {
-            if(items.usersConnectedLabels[key] !== label) {
-                result[key] = items.usersConnectedLabels[key];
-            }
-            return result;
-        }, {});
-
-        chrome.storage.sync.set({'usersConnectedLabels': {...filteredObj}}, () => {});
-    });
-}
-
-export const editUsersLabels = (id, label, oldLabel) => {
-    chrome.storage.sync.get(['usersLabel'], (items) => {
-        if (items.usersLabel == null || items.usersLabel == undefined) {
-            return;
-        }
-
-        items.usersLabel[label] = items.usersLabel[oldLabel];
-        delete items.usersLabel[oldLabel];
-        items.usersLabel[label].label = label;
-
-        chrome.storage.sync.set({'usersLabel': {...items.usersLabel}}, () => {});
-    });
-
-    chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
-        if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
-            return;
-        }
-
-        const keys = Object.keys(items.usersConnectedLabels);
-
-        const filteredObj = keys.reduce((result, key) => {
-            if(items.usersConnectedLabels[key] !== oldLabel) {
-                result[key] = items.usersConnectedLabels[key];
-            } else {
-                result[key] = label;
-            }
-            return result;
-        }, {});
-
-        chrome.storage.sync.set({'usersConnectedLabels': {...filteredObj}}, () => {});
-    });
-}
-
-
-///////////// UsersNotes /////////////
-
-export const setUsersNote = (user, note) => {
-    chrome.storage.sync.get(['usersNote'], (items) => {
-        if (items.usersNote == null || items.usersNote == undefined) {
-            items.usersNote = {};
-        }
-
-        items.usersNote[user] = note;
-        chrome.storage.sync.set({'usersNote': {...items.usersNote}}, () => {});
-    });
 }

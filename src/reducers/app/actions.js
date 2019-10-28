@@ -17,10 +17,13 @@ export const addNewReply = (text) => ({
     text
 })
 
-export const addNewReplyMediaQuery = (text, fileName) => ({
+export const addNewReplyMediaQuery = (text, fileName, fileSize, fileType, fileLastModified) => ({
     type: c.ADD_NEW_REPLY_MEDIA_QUERY,
     text,
-    fileName
+    fileName,
+    fileSize,
+    fileType,
+    fileLastModified
 })
 
 export const deleteLabel = (id, label) => ({
@@ -41,6 +44,17 @@ export const addNewLabel = (color, label, user) => ({
     color,
     label,
     user
+});
+
+export const addUserToLabel = (label, user) => ({
+    type: c.ADD_USER_TO_LABEL,
+    label,
+    user
+});
+
+export const deleteUserToLabel = (label) => ({
+    type: c.DELETE_USER_TO_LABEL,
+    label,
 });
 
 export const getDefaultQuickReplies = (defaultState) => ({

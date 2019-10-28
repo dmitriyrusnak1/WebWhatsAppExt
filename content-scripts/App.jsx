@@ -4,6 +4,7 @@ import {Store} from 'webext-redux';
 import ReactDOM from "react-dom";
 import { MainWrapper } from "./containers";
 import 'antd/dist/antd.less';
+import 'font-awesome/css/font-awesome.min.css'; 
 import './global-style';
 import './style.scss';
 
