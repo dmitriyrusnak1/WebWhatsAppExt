@@ -75,6 +75,11 @@ function LabelsField({
                         <div
                             key={item.id}
                             className={css.labelsListField}
+                            style={{
+                                background: showLabelForUser(item.id) ? `${item.color}` : "inherit",
+                                transition: 'all .6s'
+                            
+                            }}
                             onClick={handleSwitchLabelForUser(item.id)}
                         >
                             <div className={css.colorField}>
