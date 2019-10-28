@@ -55,17 +55,12 @@ function LabelsField({
 
         const isChecked = showLabelForUser(id);
         if(isChecked) {
-            deleteUserToLabel(label);
-            deleteCurrentUsersLabels(label);
+            deleteUserToLabel(user);
+            deleteCurrentUsersLabels(user);
         } else {
             addUserToLabel(label, user);
             addCurrentUsersLabels(label, user);
         }
-
-
-
-
-console.log('--///////////-------', isChecked)
     }
 
     return (

@@ -192,7 +192,7 @@ export const editUsersLabels = (id, label, oldLabel) => {
 }
 
 
-export const deleteCurrentUsersLabels = (label) => {
+export const deleteCurrentUsersLabels = (user) => {
     chrome.storage.sync.get(['usersConnectedLabels'], (items) => {
         if (items.usersConnectedLabels == null || items.usersConnectedLabels == undefined) {
             return;
@@ -201,7 +201,7 @@ export const deleteCurrentUsersLabels = (label) => {
         const keys = Object.keys(items.usersConnectedLabels);
 
         const filteredObj = keys.reduce((result, key) => {
-            if(items.usersConnectedLabels[key] !== label) {
+            if(key !== user) {
                 result[key] = items.usersConnectedLabels[key];
             }
             return result;

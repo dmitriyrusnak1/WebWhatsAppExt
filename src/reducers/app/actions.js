@@ -52,9 +52,9 @@ export const addUserToLabel = (label, user) => ({
     user
 });
 
-export const deleteUserToLabel = (label) => ({
+export const deleteUserToLabel = (user) => ({
     type: c.DELETE_USER_TO_LABEL,
-    label,
+    user,
 });
 
 export const getDefaultQuickReplies = (defaultState) => ({

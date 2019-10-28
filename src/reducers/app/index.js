@@ -126,7 +126,6 @@ const usersConnectedLabels = (state = initialState.usersConnectedLabels, action)
             rawData[action.user] = action.label;
             return {...rawData}
         case c.DELETE_LABEL:
-        case c.DELETE_USER_TO_LABEL:
             const keys = Object.keys(state);
 
             const filteredObj = keys.reduce((result, key) => {
@@ -136,6 +135,16 @@ const usersConnectedLabels = (state = initialState.usersConnectedLabels, action)
                 return result;
             }, {});
             return {...filteredObj};
+        case c.DELETE_USER_TO_LABEL:
+            const keysUser = Object.keys(state);
+
+            const filteredRawData = keysUser.reduce((result, key) => {
+                if(key !== action.user) {
+                    result[key] = state[key];
+                }
+                return result;
+            }, {});
+            return {...filteredRawData};
         case c.CHANGE_LABEL:
             const keysData = Object.keys(state);
 
