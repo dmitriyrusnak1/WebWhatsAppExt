@@ -17,6 +17,7 @@ import {
 } from '../../../src/reducers/app/actions';
 
 
+var delayTime = 8000;
 
 const propTypes = {
     getDefaultQuickReplies: func,
@@ -88,6 +89,7 @@ function MainWrapper({
                     getSelectedUser(name, image);
                 }
             });
+            delayTime = 80;
         }, 8000);
     }, []);
 
@@ -96,23 +98,26 @@ function MainWrapper({
             setTimeout(() => {
                 const contactPannel = document.getElementById("pane-side");
     
-    
-                const contacts = contactPannel.querySelectorAll('._2UaNq ._19RFN');
+                console.log("Starting coloring labels");
+                const contacts = contactPannel.querySelectorAll('._2UaNq');
                 contacts.forEach(item => {
-                    const user = item.innerHTML;
+                    const userItem = item.querySelector('._19RFN');
+                    const user = userItem.innerHTML;
                     const label = usersConnectedLabels[user];
     
                     if(!!label) {
                         colorFilters.forEach(data => {
                             if(data.label === label){
                                 item.style.background = data.color;
+                                console.log("label colored");
                             }
                         })
                     } else {
                         item.style.background = 'inherit';
                     }
+                    
                 });
-            }, 3000);
+        }, delayTime);
         }
     }, [usersConnectedLabels]);
 
