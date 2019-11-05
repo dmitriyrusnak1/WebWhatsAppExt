@@ -66,7 +66,10 @@ export const convertStrToNode = (field, className, fileName) => {
     }
 }
 
+export const genRandomId = () => Math.random().toString(36).replace(/[^a-z]+/g, '').substr(2, 10);
+
 ///////////// QuickReply /////////////
+
 
 export const setNewQuickReply = (text) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
