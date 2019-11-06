@@ -40,6 +40,21 @@ export const setNewQuickReplyMediaQuery = (text, fileName, fileSize, fileType, f
     });
 }
 
+function sendQuickReplyToChat(quickReply) {
+    window.InputEvent = window.Event || window.InputEvent;
+
+  var event = new InputEvent('input', {
+    bubbles: true
+  });
+
+  var textbox = document.querySelector('div._3u328');
+
+  textbox.textContent = quickReply.text;
+  textbox.dispatchEvent(event);
+
+  document.querySelector("button._3M-N-").click();
+}
+
 export const chooseCurrentQuickReply = (id) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {
@@ -47,6 +62,8 @@ export const chooseCurrentQuickReply = (id) => {
         }
 
         items.quickReplies[id].count = items.quickReplies[id].count + 1;
+
+        sendQuickReplyToChat(items.quickReplies[id]);
 
         chrome.storage.local.set({'quickReplies': {...items.quickReplies}}, () => {});
     });

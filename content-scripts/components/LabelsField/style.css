@@ -11,6 +11,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 10px 0 0 0;
 }
 
 .labelHeader>h1 {
@@ -26,7 +27,6 @@
 
 .colorField>p {
     padding: 0 0 0 10px!important;
-    text-decoration: underline;
     font-size: 18px;
 }
 
@@ -115,7 +115,7 @@
     align-items: center;
 }
 
-.colorPickerFieldsWrappelabelsListField{
+.colorPickerFieldsWrapper>div:first-child{
     width: 350px;
     margin-right: 30px;
 }
@@ -127,6 +127,8 @@
 .labelsListField {
     padding: 5px 10px;
     cursor: pointer;
+    display: flex;
+    justify-content: space-between;
 }
 
 .labelsListField:hover {

@@ -83,10 +83,10 @@ function LabelsField({
                             onClick={handleSwitchLabelForUser(item.id)}
                         >
                             <div className={css.colorField}>
-                                {!isEmpty(selectedUser) && <Checkbox checked={showLabelForUser(item.id)} />}
                                 <div className={css.colorCircle} style={{background: `${item.color}`}} />
                                 <p>{item.label}</p>
                             </div>
+                            {!isEmpty(selectedUser) && <Checkbox checked={showLabelForUser(item.id)} />}
                         </div>
                     )
                 }

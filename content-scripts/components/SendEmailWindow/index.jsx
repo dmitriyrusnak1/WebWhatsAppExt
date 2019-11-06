@@ -22,7 +22,19 @@ function SendEmailWindow({
 }) {
     
     const sendIcon = chrome.runtime.getURL("images/sendMessage.svg");
+    const hoverSendIcon = chrome.runtime.getURL("images/hoverSendMessage.svg");
 
+    const [isHovering, setHovering] = React.useState(false);
+    
+    const handleMouseOver = (e) => {
+        isEmailValid && setHovering(true)
+    }
+  
+    const handleMouseOut = (e) => {
+        isEmailValid && setHovering(false)
+    }
+
+    
     return (
         <form className={css.newMessageWrapper} onSubmit={handleSendEmail} noValidate>
             <h2>send conversation to email address</h2>
@@ -39,9 +51,11 @@ function SendEmailWindow({
                     className={classNames({
                         [css.disableSendButton]: isEmailValid,
                     })}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
                 >
                     <img
-                        src={sendIcon}
+                        src={!isHovering ? sendIcon : hoverSendIcon}
                         alt="sendIcon"
                     />
                 </button>

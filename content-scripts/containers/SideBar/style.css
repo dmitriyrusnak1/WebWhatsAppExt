@@ -12,8 +12,16 @@
 
 .iconWrapper {
     width: 100%;
-    height: 45px;
+    height: 47px;
     cursor: pointer;
+}
+
+.contentWrapper>.iconWrapper:first-of-type {
+    cursor: default;
+}
+
+.contentWrapper>.iconWrapper:first-of-type:hover {
+    background: inherit;
 }
 
 .iconWrapper:hover {
@@ -22,7 +30,7 @@
 
 .iconWrapper>img {
     width: 100%;
-    height: 35px;
+    height: 37px;
     padding-top: 10px;
 }
 

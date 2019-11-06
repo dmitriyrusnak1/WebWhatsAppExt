@@ -20,11 +20,13 @@ function SideBar() {
     const handleChangePhone = (e) => {
         const value = e.target.value;
         setPhoneNumber(value);
+        if(isMessageSuccess) setIsMessageSuccess(false);
     }
 
     const handleChangeMessage = (e) => {
         const value = e.target.value;
         setMessage(value);
+        if(isMessageSuccess) setIsMessageSuccess(false);
     }
 
     const handleSendMessage = (e) => {
