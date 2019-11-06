@@ -11,7 +11,7 @@ const propTypes = {
     handleSendMessage: func,
     phoneNumber: string,
     message: string,
-    isMessageSuccess: bool
+    isMessageSuccess: bool,
 };
 
 function NewMessage({
@@ -24,6 +24,22 @@ function NewMessage({
 }) {
     
     const sendIcon = chrome.runtime.getURL("images/sendMessage.svg");
+    const hoverSendIcon = chrome.runtime.getURL("images/hoverSendMessage.svg");
+
+    const [isHovering, setHovering] = React.useState(false);
+
+    React.useEffect(() => {
+        if(isMessageSuccess) setHovering(false);
+    }, [isMessageSuccess]);
+
+    const handleMouseOver = (e) => {
+        !!message && !!phoneNumber && setHovering(true)
+    }
+  
+    const handleMouseOut = (e) => {
+        !!message && !!phoneNumber && setHovering(false)
+    }
+
 
     return (
         <form className={css.newMessageWrapper} onSubmit={handleSendMessage}>
@@ -45,11 +61,13 @@ function NewMessage({
                 <button
                     type="submit"
                     className={classNames({
-                        [css.disableSendButton]: true,
+                        [css.disableSendButton]: !!phoneNumber && !!message,
                     })}
+                    onMouseOver={handleMouseOver}
+                    onMouseOut={handleMouseOut}
                 >
                     <img
-                        src={sendIcon}
+                        src={!isHovering ? sendIcon : hoverSendIcon}
                         alt="sendIcon"
                     />
                 </button>
