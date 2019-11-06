@@ -1,5 +1,5 @@
 @value colors: "../../global-style/colors.css";
-@value (mainGreyColor, hoverGreyColor) from colors;
+@value (mainGreyColor, hoverGreyColor, greyColor, darkGreyColor) from colors;
 
 .mainBottomAreaWrapper {
     display: flex;
@@ -9,7 +9,7 @@
 }
 
 .mainBottomAreaWrapper i {
-    color: mainGreyColor;
+    color: darkGreyColor;
 }
 
 .mainBottomAreaWrapper>div {
@@ -35,11 +35,7 @@ p {
 
 .filtersField {
     position: relative;
-    padding: 0 10px;
-}
-
-.filtersField:hover {
-    background: hoverGreyColor!important;
+    background: greyColor;
 }
 
 .filtersField>div:first-child {
@@ -48,6 +44,11 @@ p {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 10px;
+}
+
+.filtersField>div:first-child:hover {
+    background: hoverGreyColor!important;
 }
 
 .quickReplies,
@@ -61,7 +62,7 @@ p {
     background: #fff;
     text-align: center;
     padding-bottom: 20px;
-    background: hoverGreyColor;
+    background: greyColor;
 }
 
 .quickReplies>div,
@@ -75,10 +76,10 @@ p {
 }
 
 .filters>div>p,
-.quickReplies>div>p {
+.quickReplies>div>div>p {
     font-weight: 800;
     font-size: 16px;
-    text-decoration: underline;
+    color: darkGreyColor;
 }
 
 .quickReplies>button {
@@ -112,10 +113,23 @@ p {
     justify-content: space-between;
     align-items: center;
     position: relative;
+    background: greyColor;
+}
+
+.quickRepliesMainField {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 100%;
     padding: 0 10px;
 }
 
-.quickRepliesField>div:first-child:hover {
+.iconDown {
+    padding: 5px 0 0 0!important;
+}
+
+.quickRepliesMainField:hover {
     background: hoverGreyColor!important;
 }
 
@@ -127,6 +141,8 @@ p {
     height: 100%;
     text-align: center;
     border-left: 1px solid #ddd;
+    background: greyColor;
+    cursor: pointer;
 }
 
 .emailButton:hover {
@@ -136,7 +152,7 @@ p {
 .emailButton>i {
     font-size: 22px;
     margin-top: 15px;
-    color: mainGreyColor;
+    color: darkGreyColor;
 }
 
 .colorField {
@@ -161,16 +177,44 @@ p {
 }
 
 .chosenQuickReplies {
-    color: black;
-    text-decoration: underline;
+    color: darkGreyColor;
     font-size: 16px;
     font-weight: 800;
     display: flex;
+    padding: 0 0 0 10px!important;
+
 }
 
 .checkboxGroup {
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 10px 0 0 10px;
 }
 
+.quickRepliesItem {
+    cursor: default;
+}
+
+.quickRepliesItem:hover {
+    cursor: pointer;
+    background: hoverGreyColor;
+}
+
+.filterCheckbox {
+    margin-right: 15px!important;
+}
+
+.filterField {
+    padding: 10px 0 0 0;
+}
+
+.filterItem>div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.hoverFilterEffect {
+    background: hoverGreyColor!important;
+}

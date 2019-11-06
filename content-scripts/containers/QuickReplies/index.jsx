@@ -9,6 +9,7 @@ import { connect } from 'react-redux';
 import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
+import FilterItem from './FilterItem';
 import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
 import { chooseCurrentQuickReply } from '../../utils';
 import { EMAIL_PATTERN } from '../../constants';
@@ -41,7 +42,7 @@ class QuickReplies extends React.Component {
     choosenFilter: [],
     isFiltersVisible: false,
     isEmailValid: false,
-    successSending: false
+    successSending: false,
   }
 
 
@@ -164,7 +165,7 @@ class QuickReplies extends React.Component {
     const rawData = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0];
     const data = this.props.quickReplies.filter(item => item.id === this.state.choosenReplies)[0].text;
 
-    const filter = convertStrToNode(data, !!rawData.fileName ? rawData.fileName : '', css.storagedImg);
+    const filter = convertStrToNode(data, css.storagedImg, !!rawData.fileName ? rawData.fileName : '');
 
     return filter;
   }
@@ -189,7 +190,7 @@ class QuickReplies extends React.Component {
       isFiltersVisible,
       choosenFilter,
       isEmailValid,
-      successSending
+      successSending,
     } = this.state;
 
     const { quickReplies, colorFilters, usersConnectedLabels } = this.props;
@@ -198,26 +199,25 @@ class QuickReplies extends React.Component {
       <div className={css.mainBottomAreaWrapper}>
           <div
             className={css.filtersField}
-            style={{background: isFiltersVisible ? '#c8c8c8' : 'inherit'}}
           >
               <div
                 onClick={this.handleOpenFilters}
                 ref={this.FRef}
               >
-              {
-                  isEmpty(choosenFilter) ?
-                  <p className={css.chosenQuickReplies}>Filter</p> :
-                  <div className={css.chosenQuickReplies}>
-                      {choosenFilter.map(item => 
-                          <div key={item.id} className={css.colorField}>
-                              <div className={css.colorCircle} style={{background: `${item.color}`}} />
-                              <p>{item.label}</p>
-                              <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>,
-                          </div>
-                      )}
-                  </div>
-              }
-              <p><Icon type="down" /></p>
+                {
+                    isEmpty(choosenFilter) ?
+                    <p className={css.chosenQuickReplies}>Filter</p> :
+                    <div className={css.chosenQuickReplies}>
+                        {choosenFilter.map(item => 
+                            <div key={item.id} className={css.colorField}>
+                                <div className={css.colorCircle} style={{background: `${item.color}`}} />
+                                <p>{item.label}</p>
+                                <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>,
+                            </div>
+                        )}
+                    </div>
+                }
+                <p className={css.iconDown}><Icon type="down" /></p>
               </div>
               <div
                   className={classNames({
@@ -228,42 +228,31 @@ class QuickReplies extends React.Component {
               >
                   <div>
                       <p>Filter by:</p> 
-                        {colorFilters.map((item) =>
-                            <div
-                                onClick={this.handleChooseFilters(item)}
-                                key={item.id}
-                                style={{
-                                    background: this.showChosenFilters(item.id) ? `${item.color}` : 'inherit',
-                                    transition: 'all .6s'
-                                }}
-                            >
-                                <div className={css.checkboxGroup}>
-                                    <Checkbox
-                                        checked={this.showChosenFilters(item.id)}
-                                    />
-                                    <div>
-                                        <div className={css.colorField}>
-                                            <div className={css.colorCircle} style={{background: `${item.color}`}} />
-                                            <p>{item.label}</p>
-                                            <p>({countFilteredUsers(item.label, usersConnectedLabels)})</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={css.divider} />
-                            </div>)} 
+
+                            {colorFilters.map((item) =>
+                                <FilterItem
+                                    key={item.id}
+                                    onHandleClick={this.handleChooseFilters}
+                                    item={item}
+                                    usersConnectedLabels={usersConnectedLabels}
+                                    showChosenFilters={this.showChosenFilters}
+                                />
+                            )}
+                        
                   </div>
               </div>
           </div>
           <div className={css.quickRepliesField}>
               <div
-                  style={{background: isQuickRepliesVisible || isModalMoreVisible ? '#c8c8c8' : 'inherit'}}
                   onClick={this.handleOpenQuickReplies}
                   ref={this.QRRef}
               >
-                  <p className={css.chosenQuickReplies}>{!choosenReplies ? 'Quick Replies' : this.filteredData()}</p>
-                  <p>
-                      <Icon type="down" />
-                  </p>
+                  <div className={css.quickRepliesMainField}>
+                    <p className={css.chosenQuickReplies}>{!choosenReplies ? 'Quick Replies' : this.filteredData()}</p>
+                    <p className={css.iconDown}>
+                        <Icon type="down" />
+                    </p>
+                  </div>
                   <div
                       className={classNames({
                           [css.quickReplies]: true,
@@ -273,15 +262,20 @@ class QuickReplies extends React.Component {
                   >
                       <div>
                           {quickReplies.sort((a, b) => b.count - a.count).map((item) =>
-                              <React.Fragment key={item.id}>
+                              <div
+                                key={item.id}
+                                className={classNames({
+                                    [css.quickRepliesItem]: !item.fileName,
+                                })}
+                              >
                                     <p onClick={this.handleChooseReplies(item.id)}>
                                         {
-                                            convertStrToNode(item.text, !!item.fileName ? item.fileName : '', css.storagedImg)
+                                            convertStrToNode(item.text, css.storagedImg, !!item.fileName ? item.fileName : '')
                                         }
                                     </p>
 
                                   <div className={css.divider} />
-                              </React.Fragment>)}
+                              </div>)}
                       </div>
                       <Tooltip overlayStyle={{zIndex: '1111111111111'}} title='Add new Quick Reply or new File'>
                             <Button onClick={this.handleOpenModalMore}>More<Icon type="double-right" /></Button>
@@ -292,7 +286,7 @@ class QuickReplies extends React.Component {
                 <div
                     className={css.emailButton}
                     onClick={this.handleOpenModalEmail}
-                    style={{background: isModalEmailVisible ? '#c8c8c8' : 'inherit'}}
+                    style={{background: isModalEmailVisible ? '#c8c8c8' : '#ebebeb'}}
                 >
                     <Icon type="mail" />
                 </div>

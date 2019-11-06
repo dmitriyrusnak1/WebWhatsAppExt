@@ -1,12 +1,11 @@
 @value colors: "../../global-style/colors.css";
-@value (hoverGreyColor) from colors;
+@value (hoverGreyColor, darkGreyColor) from colors;
 
 .newMessageWrapper>h2 {
-    text-transform: capitalize;
-    text-decoration: underline;
+    text-transform: capitalize; 
     font-weight: 800;
     font-size: 20px;
-    color: #ddd;
+    color: darkGreyColor;
 }
 
 .newMessageWrapper input,
@@ -37,10 +36,11 @@
 .messageWrapper button {
     margin-left: 15px;
     border-radius: 3px;
+    cursor: default;
 }
 
 .messageWrapper .disableSendButton:hover {
-    background: hoverGreyColor;
+    cursor: pointer;
 }
 
 .successEmail {
