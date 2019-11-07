@@ -19,14 +19,14 @@ const store = new Store({
 
 store.ready().then(() => {
   const readyStateCheckInterval = setInterval(() => {
-    if(document.readyState === "complete") {
+    if(document.readyState === "complete" && !!document.querySelector(".app")) {
       clearInterval(readyStateCheckInterval);
 
       const Element = document.createElement("div");
       Element.setAttribute("id", "dfghbnjmERHJKFGHNMVBNMFBNMbmvvxnbdgf");
-      const rootContainer = document.getElementById("app");
+      const rootContainer = document.querySelector(".app-wrapper-web");
 
-      rootContainer.insertAdjacentElement("beforebegin", Element);
+      rootContainer.insertAdjacentElement("afterbegin", Element);
 
       ReactDOM.render(
         <Provider store={store}>
