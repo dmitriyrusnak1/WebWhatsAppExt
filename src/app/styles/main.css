@@ -2,17 +2,18 @@ body {
   position: relative;
 }
 
-#app {
+.app {
   width: calc(100vw - 50px - 350px) !important;
-  height: calc(100vh - 100px) !important;
-  position: absolute !important;
-  top: 50px!important;
-  left: 50px!important;
+  margin-right: 350px !important;
+  margin-left: 50px !important;
+  margin-top: 50px !important;
+  z-index: 1111;
 }
 
-.app {
-  width: 100%!important;
+.app-wrapper-web ._3fUe9 {
+  height: calc(100vh - 100px) !important;
 }
+
 
 .sideBar {
   width: 50px;
@@ -23,6 +24,7 @@ body {
   left: 0;
   background: #014489;
   padding: 0;
+  z-index: 111;
 }
 
 .quick-replies {
@@ -33,7 +35,7 @@ body {
   position: absolute;
   border-top: 1px solid grey;
   background: #fff;
-  padding: 0;    
+  padding: 0; 
 }
 
 .mainMenu {
@@ -44,6 +46,7 @@ body {
   position: absolute;
   border-left: 1px solid grey;
   background: #fff;
+  display: block;
 }
 
 .topLogo {
