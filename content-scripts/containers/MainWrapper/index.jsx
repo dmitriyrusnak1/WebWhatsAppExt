@@ -71,7 +71,7 @@ function MainWrapper({
 
         getDefaultSelectedUser();
 
-        setTimeout(() => {
+        // setTimeout(() => {
             const contactPannel = document.getElementById("pane-side");
 
             contactPannel.addEventListener('click', () => {
@@ -90,12 +90,12 @@ function MainWrapper({
                 }
             });
             delayTime = 80;
-        }, 8000);
+        // }, 8000);
     }, []);
 
     useEffect(() => {
         if(!isEmpty(usersConnectedLabels)) {
-            setTimeout(() => {
+            // setTimeout(() => {
                 const contactPannel = document.getElementById("pane-side");
     
                 console.log("Starting coloring labels");
@@ -117,7 +117,7 @@ function MainWrapper({
                     }
                     
                 });
-        }, delayTime);
+        // }, delayTime);
         }
     }, [usersConnectedLabels]);
 
