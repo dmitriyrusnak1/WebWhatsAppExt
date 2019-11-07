@@ -2,18 +2,6 @@ body {
   position: relative;
 }
 
-/* #app {
-  width: calc(100vw - 50px - 350px) !important;
-  height: calc(100vh - 100px) !important;
-  position: absolute !important;
-  top: 50px!important;
-  left: 50px!important;
-}
-
-.app {
-  width: 100%!important;
-} */
-
 .app {
   width: calc(100vw - 50px - 350px) !important;
   margin-right: 350px !important;

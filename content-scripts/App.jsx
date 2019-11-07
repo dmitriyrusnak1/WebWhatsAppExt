@@ -17,45 +17,23 @@ const store = new Store({
 
 
 
-// store.ready().then(() => {
-//   const readyStateCheckInterval = setInterval(() => {
-//     if(document.readyState === "complete") {
-//       clearInterval(readyStateCheckInterval);
-
-//       const Element = document.createElement("div");
-//       Element.setAttribute("id", "dfghbnjmERHJKFGHNMVBNMFBNMbmvvxnbdgf");
-//       const rootContainer = document.getElementById("app");
-
-//       rootContainer.insertAdjacentElement("beforebegin", Element);
-
-//       ReactDOM.render(
-//         <Provider store={store}>
-//             <MainWrapper />
-//         </Provider>,
-//         document.getElementById("dfghbnjmERHJKFGHNMVBNMFBNMbmvvxnbdgf")
-//       );
-//     }
-//   }, 10);
-// });
-
 store.ready().then(() => {
   const readyStateCheckInterval = setInterval(() => {
     if(document.readyState === "complete" && !!document.querySelector(".app")) {
       clearInterval(readyStateCheckInterval);
-      // setTimeout(() => {
-        const Element = document.createElement("div");
-        Element.setAttribute("id", "dfghbnjmERHJKFGHNMVBNMFBNMbmvvxnbdgf");
-        const rootContainer = document.querySelector(".app-wrapper-web");
-  
-        rootContainer.insertAdjacentElement("afterbegin", Element);
-  
-        ReactDOM.render(
-          <Provider store={store}>
-              <MainWrapper />
-          </Provider>,
-          document.getElementById("dfghbnjmERHJKFGHNMVBNMFBNMbmvvxnbdgf")
-        );
-      // }, 3000);
+
+      const Element = document.createElement("div");
+      Element.setAttribute("id", "dfghbnjmERHJKFGHNMVBNMFBNMbmvvxnbdgf");
+      const rootContainer = document.querySelector(".app-wrapper-web");
+
+      rootContainer.insertAdjacentElement("afterbegin", Element);
+
+      ReactDOM.render(
+        <Provider store={store}>
+            <MainWrapper />
+        </Provider>,
+        document.getElementById("dfghbnjmERHJKFGHNMVBNMFBNMbmvvxnbdgf")
+      );
     }
   }, 10);
 });
