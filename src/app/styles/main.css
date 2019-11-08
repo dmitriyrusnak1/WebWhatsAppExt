@@ -7,7 +7,6 @@ body {
   margin-right: 350px !important;
   margin-left: 50px !important;
   margin-top: 50px !important;
-  z-index: 1111;
 }
 
 .app-wrapper-web ._3fUe9 {
@@ -24,7 +23,6 @@ body {
   left: 0;
   background: #014489;
   padding: 0;
-  z-index: 111;
 }
 
 .quick-replies {
@@ -66,7 +64,6 @@ body {
   }
 
   .app-wrapper-web ._3fUe9 {
-    height: 100%!important;
     top: 0!important;
   }
 }
