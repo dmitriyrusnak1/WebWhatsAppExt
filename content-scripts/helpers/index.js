@@ -24,6 +24,15 @@ function hex2rgb(c) {
     return 'rgb(' + r + ', ' + g + ', ' + b + ')';
 }
 
+function getTranslateYValue(translateString){
+
+    var n = translateString.indexOf("Y(");
+     var n1 = translateString.indexOf(")");
+   
+     var res = parseInt(translateString.slice(n+2,n1-1));
+   return res;
+}
+   
 export const filterContacts = (document, filter) => {
     const contactPannel = document.getElementById("pane-side");
 
@@ -34,18 +43,23 @@ export const filterContacts = (document, filter) => {
         
         const itemWithBackground = item.querySelector('._2UaNq');
 
+        item.style.display = "block";
+        itemWithBackground.style.transform = "translateY(0px)";
+
         if(filter.length > 0 && itemWithBackground.style.background !== hex2rgb(filter[0].color)) {
             item.style.display = 'none';
-        } else {
-            item.style.display = 'block';
-            item.style.transform = "translateY("+translateY+"px)";
+        } else if (filter.length > 0 && itemWithBackground.style.background == hex2rgb(filter[0].color)) {
+            var curTranslateY = getTranslateYValue(item.style.transform);
+            var newTranslateY = curTranslateY * -1 + translateY;
+            itemWithBackground.style.transform = "translateY(" + newTranslateY + "px)";
             translateY = translateY + 72;
         }
+        document.getElementById('pane-side').scrollTop = 0;
     });
-}
+} 
 
 export const convertStrToNode = (field, className, fileName) => {
-    const rawData = field.split(';');
+    const rawData = field.split(';');   
 
     if(
         !!rawData[1] && 

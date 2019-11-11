@@ -3,7 +3,7 @@ import Modal from 'antd/es/modal';
 import Tooltip from 'antd/es/tooltip';
 import { NewMessage } from '../../components';
 import * as css from './style.css';
-
+import { sendMessageToContact } from '../../utils';
 
 function SideBar() {
     const commentsIcon = chrome.runtime.getURL("images/comments.svg");
@@ -32,6 +32,7 @@ function SideBar() {
     const handleSendMessage = (e) => {
         e.preventDefault();
         if(!message || !phoneNumber) return null;
+        sendMessageToContact(message, phoneNumber);
         setPhoneNumber(null);
         setMessage('');
         setIsMessageSuccess(true);

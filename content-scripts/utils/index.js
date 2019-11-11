@@ -55,6 +55,31 @@ function sendQuickReplyToChat(quickReply) {
   document.querySelector("button._3M-N-").click();
 }
 
+export const sendMessageToContact = (message, number) => {
+
+    var theUrl = "https://web.whatsapp.com/send?phone="+number+"&text=" + encodeURI(message);
+
+    chrome.storage.local.set({'sendMessageToNewClient': 'true'}, () => {
+        setTimeout(function() {
+            window.location.href = theUrl;
+        },500);
+    });
+    
+    return true;
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+        console.log(xmlHttp);
+        console.log(responseText);
+            //callback(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+
+    return true;
+}
+
 export const chooseCurrentQuickReply = (id) => {
     chrome.storage.local.get(['quickReplies'], (items) => {
         if (items.quickReplies == null || items.quickReplies == undefined) {

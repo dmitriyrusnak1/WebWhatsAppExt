@@ -87,6 +87,18 @@ function MainWrapper({
                 getSelectedUser(name, image);
             }
         });
+        chrome.storage.local.get(['sendMessageToNewClient'], (items) => {
+            console.log("sendMessageToNewClient");
+            console.log(items);
+            if (items.sendMessageToNewClient != null && items.sendMessageToNewClient != undefined && items.sendMessageToNewClient == 'true') {
+                chrome.storage.local.set({'sendMessageToNewClient': null}, () => {
+                    onLoadElement('button._3M-N-', function() {
+                        document.querySelector("button._3M-N-").click();
+                    })
+                });
+            }
+        });
+
     }, []);
 
     useEffect(() => {
@@ -124,6 +136,16 @@ function MainWrapper({
             <QuickReplies />
         </React.Fragment>
     );
+}
+
+function onLoadElement(elementPath, callback) {
+    if(document.querySelector(elementPath)!=null) {
+        callback();
+    } else {
+        setTimeout(function() {
+            onLoadElement(elementPath, callback)
+        }, 500);
+    }
 }
 
 const mapDispatchToProps = (dispatch) => ({

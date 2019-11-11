@@ -38,7 +38,7 @@
   "content_scripts": [
     {
       "matches": [
-        "https://web.whatsapp.com/"
+        "https://web.whatsapp.com/*"
       ],
       "js": [
         "content_script.bundle.js"
