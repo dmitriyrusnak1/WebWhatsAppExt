@@ -58,6 +58,37 @@ export const filterContacts = (document, filter) => {
     });
 } 
 
+function CustomException(message) {
+    const error = new Error(message);
+    return error;
+  }
+  
+  CustomException.prototype = Object.create(Error.prototype);
+
+
+export const sendConversationToEmail = () => {
+  
+    console.log("HERE HERE");
+
+      var messageElements = document.querySelectorAll('.FTBzM');
+      var nodesArray = [].slice.call(messageElements);
+      nodesArray = nodesArray.reverse();
+      var day = 0;
+      try {
+      nodesArray.forEach(item => {
+          var dateElem = item.querySelector('.a7otO');
+          if (dateElem != null) {if (day == 2) { console.log("\n\n"); console.log("END"); console.log("\n\n"); throw CustomException } else { day++ }}
+          var innerItem = item.querySelector('._1wsdb');
+          if (innerItem != null) {
+              console.log(innerItem.childNodes[0]);
+          }
+        })
+      }
+      catch (ex) { }
+
+    return true;
+}
+
 export const convertStrToNode = (field, className, fileName) => {
     const rawData = field.split(';');   
 

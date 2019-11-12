@@ -10,7 +10,7 @@ import classNames from 'classnames';
 import isEmpty from 'lodash/isEmpty';
 import { SendEmailWindow, EditQuickReplies } from '../../components';
 import FilterItem from './FilterItem';
-import { countFilteredUsers, filterContacts, convertStrToNode } from '../../helpers';
+import { countFilteredUsers, filterContacts, convertStrToNode, sendConversationToEmail } from '../../helpers';
 import { chooseCurrentQuickReply } from '../../utils';
 import { EMAIL_PATTERN } from '../../constants';
 import * as css from './style.css';
@@ -127,6 +127,8 @@ class QuickReplies extends React.Component {
     if(!email || !isEmailValid) {
         return null;
     } else {
+      console.log("HEHREHRHERHE");
+      sendConversationToEmail();
         this.setState({ successSending: true });
     }
   }
