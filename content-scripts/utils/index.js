@@ -40,6 +40,19 @@ export const setNewQuickReplyMediaQuery = (text, fileName, fileSize, fileType, f
     });
 }
 
+export const getSendConversationEmail = () => {
+    chrome.storage.local.get(['sendConversationEmail'], (items) => {
+        if (items.sendConversationEmail == null || items.sendConversationEmail == undefined) {
+            console.log(items.sendConversationEmail);
+            return items.sendConversationEmail;
+        }
+    });
+}
+
+export const setConversationEmail = (email) => {
+    chrome.storage.local.set({'sendConversationEmail': email}, () => {});
+}
+
 function sendQuickReplyToChat(quickReply) {
     window.InputEvent = window.Event || window.InputEvent;
 

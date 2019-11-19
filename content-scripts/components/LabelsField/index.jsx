@@ -49,7 +49,6 @@ function LabelsField({
         const rawLabel = colorFilters.filter(item => item.id === id)[0];
         if(isEmpty(selectedUser)) return null;
 
-
         const user = selectedUser.name;
         const label = rawLabel.label;
 

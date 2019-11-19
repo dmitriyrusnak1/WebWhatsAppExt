@@ -113,6 +113,7 @@ const userNotes = (state = initialState.userNotes, action) => {
 };
 
 const usersConnectedLabels = (state = initialState.usersConnectedLabels, action) => {
+    console.log(state);
     switch (action.type) {
         case c.GET_DEFAULT_USERS_CONNECTED_LABELS:
             const data = action.defaultState;
@@ -131,16 +132,18 @@ const usersConnectedLabels = (state = initialState.usersConnectedLabels, action)
                 }
                 return result;
             }, {});
+            console.log(filteredObj);
             return {...filteredObj};
         case c.DELETE_USER_TO_LABEL:
             const keysUser = Object.keys(state);
-
+            console.log(keysUser);
             const filteredRawData = keysUser.reduce((result, key) => {
                 if(key !== action.user) {
                     result[key] = state[key];
                 }
                 return result;
             }, {});
+            console.log(filteredRawData);
             return {...filteredRawData};
         case c.CHANGE_LABEL:
             const keysData = Object.keys(state);

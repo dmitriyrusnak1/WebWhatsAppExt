@@ -7,6 +7,7 @@ import MainMenu from '../MainMenu';
 import SideBar from '../SideBar';
 import QuickReplies from '../QuickReplies';
 import TopLogo from '../TopLogo';
+import he from 'he';
 import {
     getDefaultQuickReplies,
     getSelectedUser,
@@ -72,6 +73,14 @@ function MainWrapper({
 
         const contactPannel = document.getElementById("pane-side");
 
+        var reColorLabelsTimeout = null;
+        contactPannel.onscroll = () => {
+            // Whatsapp duplicates contacts UI while scrolling so we need to cleaer labels background while scrolling and 
+            resetLabelsColors();
+            clearTimeout(reColorLabelsTimeout);
+            reColorLabelsTimeout = setTimeout(() => { document.getElementById("pane-side").click(); }, 400);
+        };
+
         contactPannel.addEventListener('click', () => {
             const selectedUserName = contactPannel.querySelector('._2UaNq._3mMX1 ._19RFN');
             const selectedUserAvatar = contactPannel.querySelector('._2UaNq._3mMX1 ._3RWII img');
@@ -80,7 +89,10 @@ function MainWrapper({
             let name = 'user';
 
             if(!!selectedUserName && !!selectedUserName.innerHTML) {
-                name = selectedUserName.innerHTML;
+
+                var stripedHtml = selectedUserName.innerHTML.replace(/<[^>]+>/g, '');
+                name = he.decode(stripedHtml);
+
                 if(selectedUserAvatar) {
                     image = selectedUserAvatar.src;
                 }
@@ -103,27 +115,9 @@ function MainWrapper({
 
     useEffect(() => {
         if(!isEmpty(usersConnectedLabels)) {
-            const contactPannel = document.getElementById("pane-side");
 
-            console.log("Starting coloring labels");
-            const contacts = contactPannel.querySelectorAll('._2UaNq');
-            contacts.forEach(item => {
-                const userItem = item.querySelector('._19RFN');
-                const user = userItem.innerHTML;
-                const label = usersConnectedLabels[user];
-
-                if(!!label) {
-                    colorFilters.forEach(data => {
-                        if(data.label === label){
-                            item.style.background = data.color;
-                            console.log("label colored");
-                        }
-                    })
-                } else {
-                    item.style.background = 'inherit';
-                }
-                
-            });
+            colorLablesOnPaneSide(usersConnectedLabels, colorFilters);
+            
         }
     }, [usersConnectedLabels]);
 
@@ -136,6 +130,39 @@ function MainWrapper({
             <QuickReplies />
         </React.Fragment>
     );
+}
+
+function resetLabelsColors() {
+    const contactPannel = document.getElementById("pane-side");
+
+    const contacts = contactPannel.querySelectorAll('._2UaNq');
+    contacts.forEach(item => {
+        item.style = "";
+    });
+}
+
+function colorLablesOnPaneSide(usersConnectedLabels, colorFilters) {
+    const contactPannel = document.getElementById("pane-side");
+
+    console.log("Starting coloring labels");
+    console.log(usersConnectedLabels);
+    const contacts = contactPannel.querySelectorAll('._2UaNq');
+    contacts.forEach(item => {
+        const userItem = item.querySelector('._19RFN');
+        const user = userItem.innerHTML;
+        const label = usersConnectedLabels[user];
+        item.style = "";
+
+        if(!!label) {
+            colorFilters.forEach(data => {
+                  console.log(data.label + " === " + label);
+                if(data.label === label){
+                    item.style.background = data.color;
+                    console.log("label colored");
+                }
+            })
+        }
+    });
 }
 
 function onLoadElement(elementPath, callback) {

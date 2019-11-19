@@ -8,7 +8,7 @@ function MainMenu() {
     return (
         <div className='mainMenu'>
             <div className={css.mainMenuHeader}>
-                <h1>WhatsHack</h1>
+                <h1> WhatsHub.io </h1>
             </div>
             <UserField />
             <LabelsField />

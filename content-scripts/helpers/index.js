@@ -65,26 +65,73 @@ function CustomException(message) {
   
   CustomException.prototype = Object.create(Error.prototype);
 
+//   var server 	= email.server.connect({
+//      user:    "janalopa@gmail.com", 
+//      password:"aa757d3e-1875-432d-a8ef-62d645bec90a", 
+//      host:    "smtp.elasticemail.com", 
+//      ssl:     false
+//   });
+ 
 
-export const sendConversationToEmail = () => {
+export const sendConversationToEmail = (email) => {
   
-    console.log("HERE HERE");
+
+    var currentdate = new Date(); 
+var datetime = currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + " @ "  
+                + currentdate.getHours() + ":"  
+                + currentdate.getMinutes() + ":" 
+                + currentdate.getSeconds();
 
       var messageElements = document.querySelectorAll('.FTBzM');
       var nodesArray = [].slice.call(messageElements);
       nodesArray = nodesArray.reverse();
       var day = 0;
+      var message = "";
       try {
       nodesArray.forEach(item => {
           var dateElem = item.querySelector('.a7otO');
-          if (dateElem != null) {if (day == 2) { console.log("\n\n"); console.log("END"); console.log("\n\n"); throw CustomException } else { day++ }}
-          var innerItem = item.querySelector('._1wsdb');
-          if (innerItem != null) {
-              console.log(innerItem.childNodes[0]);
-          }
+          if (dateElem != null) {
+              console.log(dateElem);
+              if (day == 2) {
+                  console.log("\n\n"); console.log("END"); console.log("\n\n");
+            console.log(message);
+                    var http = new XMLHttpRequest();
+                    var url = 'https://hooks.zapier.com/hooks/catch/1701035/o4za8vc/';
+                    var data = JSON.stringify({"subject":"Whatsapp Conversation: " + datetime,"email":email,"message":message});
+                    http.open('POST', url, true);
+                    
+                    //Send the proper header information along with the request
+                    http.setRequestHeader('Content-type', 'application/json');
+                    
+                    http.onreadystatechange = function() {//Call a function when the state changes.
+                        if(http.readyState == 4 && http.status == 200) {
+                            console.log(http.responseText);
+                        }
+                    }
+                    http.send(data);
+                    
+                    throw CustomException
+                } else { day++ }
+            }
+    
+            var innerItem = item.querySelector('._1wsdb');
+            if (innerItem != null) {
+                message = message + "\n" + innerItem.childNodes[0].wholeText;
+            }
         })
       }
-      catch (ex) { }
+      catch (ex) { console.log(ex) }
+
+  
+    // send the message and get a callback with an error or details of the message that was sent
+    // server.send({
+    //     text:    message,
+    //     from:    "WhatsHub <gil@ywhatshub.io>", 
+    //     to:      email,
+    //     subject: "Whatsapp conversation"
+    // }, function(err, message) { console.log(err || message); });      
 
     return true;
 }

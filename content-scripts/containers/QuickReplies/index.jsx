@@ -127,8 +127,7 @@ class QuickReplies extends React.Component {
     if(!email || !isEmailValid) {
         return null;
     } else {
-      console.log("HEHREHRHERHE");
-      sendConversationToEmail();
+      sendConversationToEmail(email);
         this.setState({ successSending: true });
     }
   }

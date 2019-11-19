@@ -1,8 +1,8 @@
 {
-  "name": "Web WhatsApp Extension",
-  "version": "0.0.1",
+  "name": "WhatsHub Extension",
+  "version": "0.0.52",
   "manifest_version": 2,
-  "description": "Web WhatsApp Extension",
+  "description": "WhatsHub Extension",
   "icons": {
     "16": "images/icon-16.png",
     "128": "images/icon-128.png"
